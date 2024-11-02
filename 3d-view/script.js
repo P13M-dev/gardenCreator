@@ -38,6 +38,7 @@ function init() {
   controls.enabled = false;
 
   document.getElementById('toggleView').addEventListener('click', toggleViewMode);
+  document.getElementById('backButton').addEventListener('click', backToMenu);
   window.addEventListener('click', onCanvasClick);
 
   renderer.setAnimationLoop(render);
@@ -90,6 +91,10 @@ function toggleViewMode() {
   controls.enabled = !isPlantingMode;
 
   document.getElementById('toggleView').textContent = isPlantingMode ? 'Switch to View Mode' : 'Switch to Planting Mode';
+}
+
+function backToMenu() {
+  window.location.replace("../index.html")
 }
 
 function render() {

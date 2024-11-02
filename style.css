@@ -1,0 +1,50 @@
+body{
+    margin: 0; 
+    padding:0;
+}
+
+#splash-screen{
+    height:100dvh; 
+    background-color: #203320; 
+    display: grid; 
+    gap: 1dvw;
+    grid-template-columns: 19.2vw 19.2vw 19.2vw 19.2vw 19.2vw;
+    grid-template-rows: 15dvh 42.5dvh 42.5vh;
+    /* padding: 1dvw; */
+}
+
+#topbar{
+    grid-column: 1/-1;
+    font-family: 'DM Serif Display';
+    font-size: 3.5dvh;
+    color: #FFE3E0;
+    margin-top: -3.5dvh;
+    text-align: center;
+}
+
+#splash-desc{
+    grid-column: 1/4;
+    font-family: "Quattrocento";
+    color: #FFE3E0;
+    font-size: 7dvh;
+    word-break:break-word;
+}
+
+#actions{
+    grid-column: 4/6;
+    font-family: "Quattrocento";
+    /* display:grid;
+    grid-template-rows: 49% 49%; */
+    /* gap: 1dvw */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+#content{
+    width: 92dvw;
+    display:none;
+}
+
+   
+   
