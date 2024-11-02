@@ -6,45 +6,58 @@ import { GLTFLoader } from 'https://cdn.skypack.dev/three@0.128.0/examples/jsm/l
 
 let scene, camera, renderer, controls;
 let isPlantingMode = true;
+let baseplate;
 const loader = new GLTFLoader();
+const placedObjects = []; // Array to store references to root objects of placed models
+const scaleFactor = 1; // Scale factor for real-world scaling
 
 function init() {
+  // Scene setup
   scene = new THREE.Scene();
   scene.background = new THREE.Color(0xa0c8ff);
 
+  // Camera setup
   camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
   camera.position.set(30, 15, 20);
   camera.lookAt(0, 0, 0);
 
+  // Renderer setup
   renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
 
+  // Lighting
   const ambientLight = new THREE.AmbientLight(0xffffff, 1);
   scene.add(ambientLight);
   const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
   directionalLight.position.set(10, 20, 10);
   scene.add(directionalLight);
 
+  // Baseplate setup
   const baseGeometry = new THREE.PlaneGeometry(20, 20);
-  const baseMaterial = new THREE.MeshLambertMaterial({ color: 0x8B4513 });
-  const baseplate = new THREE.Mesh(baseGeometry, baseMaterial);
+  const baseMaterial = new THREE.MeshLambertMaterial({ color: 0x382014 });
+  baseplate = new THREE.Mesh(baseGeometry, baseMaterial);
   baseplate.rotation.x = -Math.PI / 2;
-  baseplate.position.y = 0;
   scene.add(baseplate);
 
+  // Orbit controls setup
   controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
   controls.enabled = false;
 
+  // Event listeners
   document.getElementById('toggleView').addEventListener('click', toggleViewMode);
-  document.getElementById('backButton').addEventListener('click', backToMenu);
-  window.addEventListener('click', onCanvasClick);
+  document.getElementById('backButton').addEventListener('click', backButtonWorkPls);
 
+  window.addEventListener('click', onLeftClick);
+  window.addEventListener('contextmenu', onRightClick);
+
+  // Start render loop
   renderer.setAnimationLoop(render);
 }
 
-function onCanvasClick(event) {
+// Left-click function to add a plant
+function onLeftClick(event) {
   if (!isPlantingMode) return;
 
   const mouse = new THREE.Vector2(
@@ -55,7 +68,7 @@ function onCanvasClick(event) {
   const raycaster = new THREE.Raycaster();
   raycaster.setFromCamera(mouse, camera);
 
-  const intersects = raycaster.intersectObjects(scene.children);
+  const intersects = raycaster.intersectObjects([baseplate]);
   if (intersects.length > 0) {
     const intersect = intersects[0];
     const plantType = document.getElementById('plantSelect').value;
@@ -64,24 +77,61 @@ function onCanvasClick(event) {
   }
 }
 
+// Right-click function to delete a plant
+function onRightClick(event) {
+  if (!isPlantingMode) return;
+  event.preventDefault();  // Prevent the context menu from opening
+
+  const mouse = new THREE.Vector2(
+    (event.clientX / window.innerWidth) * 2 - 1,
+    -(event.clientY / window.innerHeight) * 2 + 1
+  );
+
+  const raycaster = new THREE.Raycaster();
+  raycaster.setFromCamera(mouse, camera);
+
+  // Raycast to find intersected objects
+  const intersects = raycaster.intersectObjects(scene.children, true);
+  if (intersects.length > 0) {
+    // Find the root object to remove
+    let intersectedObject = intersects[0].object;
+
+    // Traverse up to the root (to ensure we delete the entire model)
+    while (intersectedObject.parent && intersectedObject.parent !== scene) {
+      intersectedObject = intersectedObject.parent;
+    }
+
+    // Check if the object is part of the placedObjects array
+    const objectIndex = placedObjects.indexOf(intersectedObject);
+    if (objectIndex !== -1) {
+      scene.remove(intersectedObject); // Remove from scene
+      placedObjects.splice(objectIndex, 1); // Remove from tracking array
+      console.log('Object removed:', intersectedObject); // Debugging
+    } else {
+      console.log('Clicked on baseplate or untracked object, no deletion'); // Debugging
+    }
+  } else {
+    console.log('No object detected to delete'); // Debugging
+  }
+}
+
+// Function to create and place a plant
 function createPlant(type, position) {
-  if (type === 'lowpoly_tree') {
-    loader.load('../models/lowpoly_tree/scene.gltf', (gltf) => {
+  if (type === 'oak_tree') {
+    loader.load('../models/oak_tree/scene.gltf', (gltf) => {
       const plant = gltf.scene;
       plant.position.copy(position);
-      plant.position.y += 4.5;
+      plant.scale.set(scaleFactor, scaleFactor, scaleFactor); // Apply scale factor uniformly
       scene.add(plant);
-    }, undefined, (error) => {
-      console.error('An error occurred while loading the model:', error);
+      placedObjects.push(plant); // Track the model root
     });
-  } else if (type === 'bush') {
-    loader.load('../models/sth.gltf', (gltf) => {
+  } else if (type === 'tall_bush') {
+    loader.load('../models/tall_bush/scene.gltf', (gltf) => {
       const plant = gltf.scene;
       plant.position.copy(position);
-      plant.position.y += 0.5;
+      plant.scale.set(0.5 * scaleFactor, 0.5 * scaleFactor, 0.5 * scaleFactor); // Apply scale factor
       scene.add(plant);
-    }, undefined, (error) => {
-      console.error('An error occurred while loading the model:', error);
+      placedObjects.push(plant); // Track the model root
     });
   }
 }
@@ -89,12 +139,11 @@ function createPlant(type, position) {
 function toggleViewMode() {
   isPlantingMode = !isPlantingMode;
   controls.enabled = !isPlantingMode;
-
   document.getElementById('toggleView').textContent = isPlantingMode ? 'Switch to View Mode' : 'Switch to Planting Mode';
 }
 
-function backToMenu() {
-  window.location.replace("../index.html")
+function backButtonWorkPls() {
+  window.location.replace("../index.html");
 }
 
 function render() {
