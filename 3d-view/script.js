@@ -65,7 +65,7 @@ function onCanvasClick(event) {
 
 function createPlant(type, position) {
   if (type === 'lowpoly_tree') {
-    loader.load('models/lowpoly_tree/scene.gltf', (gltf) => {
+    loader.load('./models/lowpoly_tree/scene.gltf', (gltf) => {
       const plant = gltf.scene;
       plant.position.copy(position);
       plant.position.y += 4.5;
@@ -74,7 +74,7 @@ function createPlant(type, position) {
       console.error('An error occurred while loading the model:', error);
     });
   } else if (type === 'bush') {
-    loader.load('models/sth.gltf', (gltf) => {
+    loader.load('./models/sth.gltf', (gltf) => {
       const plant = gltf.scene;
       plant.position.copy(position);
       plant.position.y += 0.5;
