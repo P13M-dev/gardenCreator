@@ -9,8 +9,15 @@ let isPlantingMode = true;
 let baseplate;
 const loader = new GLTFLoader();
 const placedObjects = [];
-let ghostModel = null; 
-const scaleFactors = { oak_tree: 1, tall_bush: 0.5 };
+let ghostModel = null;
+
+// Models data with real-world sizes in meters
+const modelsData = {
+  oak_tree: { path: '../models/oak_tree/scene.gltf', displayName: 'Oak Tree', realHeight: 15 },
+  tall_bush: { path: '../models/tall_bush/scene.gltf', displayName: 'Tall Bush', realHeight: 2 },
+  thuya: {path: '../models/thuya/scene.gltf ', scale: 2, displayName: 'Tuja (Arborvitae)', realHeight: 6 },
+  // Add more plants with their actual sizes here
+};
 
 function init() {
   scene = new THREE.Scene();
@@ -22,6 +29,7 @@ function init() {
 
   renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(window.devicePixelRatio);
   document.body.appendChild(renderer.domElement);
 
   const ambientLight = new THREE.AmbientLight(0xffffff, 1);
@@ -31,7 +39,7 @@ function init() {
   scene.add(directionalLight);
 
   const baseGeometry = new THREE.PlaneGeometry(20, 20);
-  const baseMaterial = new THREE.MeshLambertMaterial({ color: 0x382014 });
+  const baseMaterial = new THREE.MeshLambertMaterial({ color: 0x382014, side: THREE.DoubleSide });
   baseplate = new THREE.Mesh(baseGeometry, baseMaterial);
   baseplate.rotation.x = -Math.PI / 2;
   scene.add(baseplate);
@@ -40,28 +48,53 @@ function init() {
   controls.enableDamping = true;
   controls.enabled = false;
 
+  populateDropdown();
+  loadGhostModel(document.getElementById('plantSelect').value);
+
   document.getElementById('toggleView').addEventListener('click', toggleViewMode);
   document.getElementById('backButton').addEventListener('click', backButtonWorkPls);
   document.getElementById('plantSelect').addEventListener('change', onPlantChange);
-  
-  window.addEventListener('click', onLeftClick);
-  window.addEventListener('contextmenu', onRightClick);
-  window.addEventListener('mousemove', onMouseMove);
 
-  loadGhostModel(document.getElementById('plantSelect').value);
+  window.addEventListener('click', onLeftClick);
+  // window.addEventListener('contextmenu', onRightClick);
+  window.addEventListener('mousemove', onMouseMove);
+  window.addEventListener('resize', onWindowResize);
+
   renderer.setAnimationLoop(render);
 }
 
+// Function to handle resizing
+function onWindowResize() {
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  controls.update();
+}
+
+// Populate dropdown dynamically based on modelsData
+function populateDropdown() {
+  const selectElement = document.getElementById('plantSelect');
+  selectElement.innerHTML = '';
+
+  for (const modelKey in modelsData) {
+    const option = document.createElement('option');
+    option.value = modelKey;
+    option.textContent = modelsData[modelKey].displayName;
+    selectElement.appendChild(option);
+  }
+}
+
+// Load ghost model with proper scale based on real-world size
 function loadGhostModel(type) {
   if (ghostModel) {
     scene.remove(ghostModel);
     ghostModel = null;
   }
 
-  const modelPath = type === 'oak_tree' ? '../models/oak_tree/scene.gltf' : '../models/tall_bush/scene.gltf';
-  const scaleFactor = scaleFactors[type];
+  const modelInfo = modelsData[type];
+  if (!modelInfo) return;
 
-  loader.load(modelPath, (gltf) => {
+  loader.load(modelInfo.path, (gltf) => {
     ghostModel = gltf.scene;
     ghostModel.traverse((node) => {
       if (node.isMesh) {
@@ -70,8 +103,14 @@ function loadGhostModel(type) {
         node.material.opacity = 0.5;
       }
     });
+
+    // Apply scale based on real-world height
+    const boundingBox = new THREE.Box3().setFromObject(ghostModel);
+    const modelHeight = boundingBox.max.y - boundingBox.min.y;
+    const scaleFactor = modelInfo.realHeight / modelHeight;
     ghostModel.scale.set(scaleFactor, scaleFactor, scaleFactor);
-    if (isPlantingMode) scene.add(ghostModel); // Only add if in planting mode
+
+    if (isPlantingMode) scene.add(ghostModel);
   });
 }
 
@@ -96,12 +135,13 @@ function onMouseMove(event) {
     const intersect = intersects[0];
     ghostModel.position.copy(intersect.point);
     ghostModel.position.y += 0.01;
-    ghostModel.visible = true; // Make sure the ghost model is visible while on baseplate
+    ghostModel.visible = true;
   } else {
-    ghostModel.visible = false; // Hide ghost model when off the baseplate
+    ghostModel.visible = false;
   }
 }
 
+// Left-click function to place a scaled model
 function onLeftClick(event) {
   if (!isPlantingMode || !ghostModel) return;
 
@@ -122,42 +162,21 @@ function onLeftClick(event) {
   }
 }
 
-function onRightClick(event) {
-  if (!isPlantingMode) return;
-  event.preventDefault();
-
-  const mouse = new THREE.Vector2(
-    (event.clientX / window.innerWidth) * 2 - 1,
-    -(event.clientY / window.innerHeight) * 2 + 1
-  );
-
-  const raycaster = new THREE.Raycaster();
-  raycaster.setFromCamera(mouse, camera);
-
-  const intersects = raycaster.intersectObjects(scene.children, true);
-  if (intersects.length > 0) {
-    let intersectedObject = intersects[0].object;
-
-    while (intersectedObject.parent && intersectedObject.parent !== scene) {
-      intersectedObject = intersectedObject.parent;
-    }
-
-    const objectIndex = placedObjects.indexOf(intersectedObject);
-    if (objectIndex !== -1) {
-      scene.remove(intersectedObject);
-      placedObjects.splice(objectIndex, 1);
-    }
-  }
-}
-
+// Place model with real-world scaling
 function createPlant(type, position) {
-  const modelPath = type === 'oak_tree' ? '../models/oak_tree/scene.gltf' : '../models/tall_bush/scene.gltf';
-  const scaleFactor = scaleFactors[type];
+  const modelInfo = modelsData[type];
+  if (!modelInfo) return;
 
-  loader.load(modelPath, (gltf) => {
+  loader.load(modelInfo.path, (gltf) => {
     const plant = gltf.scene;
-    plant.position.copy(position);
+
+    // Apply scale based on real-world height
+    const boundingBox = new THREE.Box3().setFromObject(plant);
+    const modelHeight = boundingBox.max.y - boundingBox.min.y;
+    const scaleFactor = modelInfo.realHeight / modelHeight;
     plant.scale.set(scaleFactor, scaleFactor, scaleFactor);
+
+    plant.position.copy(position);
     scene.add(plant);
     placedObjects.push(plant);
   });
@@ -166,8 +185,7 @@ function createPlant(type, position) {
 function toggleViewMode() {
   isPlantingMode = !isPlantingMode;
   controls.enabled = !isPlantingMode;
-
-  if (ghostModel) ghostModel.visible = isPlantingMode; // Show ghost only in planting mode
+  if (ghostModel) ghostModel.visible = isPlantingMode;
   document.getElementById('toggleView').textContent = isPlantingMode ? 'Switch to View Mode' : 'Switch to Planting Mode';
 }
 
