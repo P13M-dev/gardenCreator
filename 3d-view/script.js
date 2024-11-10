@@ -8,57 +8,102 @@ let scene, camera, renderer, controls;
 let isPlantingMode = true;
 let baseplate;
 const loader = new GLTFLoader();
-const placedObjects = []; // Array to store references to root objects of placed models
-const scaleFactor = 1; // Scale factor for real-world scaling
+const placedObjects = [];
+let ghostModel = null; 
+const scaleFactors = { oak_tree: 1, tall_bush: 0.5 };
 
 function init() {
-  // Scene setup
   scene = new THREE.Scene();
   scene.background = new THREE.Color(0xa0c8ff);
 
-  // Camera setup
   camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
   camera.position.set(30, 15, 20);
   camera.lookAt(0, 0, 0);
 
-  // Renderer setup
   renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
 
-  // Lighting
   const ambientLight = new THREE.AmbientLight(0xffffff, 1);
   scene.add(ambientLight);
   const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
   directionalLight.position.set(10, 20, 10);
   scene.add(directionalLight);
 
-  // Baseplate setup
   const baseGeometry = new THREE.PlaneGeometry(20, 20);
   const baseMaterial = new THREE.MeshLambertMaterial({ color: 0x382014 });
   baseplate = new THREE.Mesh(baseGeometry, baseMaterial);
   baseplate.rotation.x = -Math.PI / 2;
   scene.add(baseplate);
 
-  // Orbit controls setup
   controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
   controls.enabled = false;
 
-  // Event listeners
   document.getElementById('toggleView').addEventListener('click', toggleViewMode);
   document.getElementById('backButton').addEventListener('click', backButtonWorkPls);
-
+  document.getElementById('plantSelect').addEventListener('change', onPlantChange);
+  
   window.addEventListener('click', onLeftClick);
   window.addEventListener('contextmenu', onRightClick);
+  window.addEventListener('mousemove', onMouseMove);
 
-  // Start render loop
+  loadGhostModel(document.getElementById('plantSelect').value);
   renderer.setAnimationLoop(render);
 }
 
-// Left-click function to add a plant
+function loadGhostModel(type) {
+  if (ghostModel) {
+    scene.remove(ghostModel);
+    ghostModel = null;
+  }
+
+  const modelPath = type === 'oak_tree' ? '../models/oak_tree/scene.gltf' : '../models/tall_bush/scene.gltf';
+  const scaleFactor = scaleFactors[type];
+
+  loader.load(modelPath, (gltf) => {
+    ghostModel = gltf.scene;
+    ghostModel.traverse((node) => {
+      if (node.isMesh) {
+        node.material = node.material.clone();
+        node.material.transparent = true;
+        node.material.opacity = 0.5;
+      }
+    });
+    ghostModel.scale.set(scaleFactor, scaleFactor, scaleFactor);
+    if (isPlantingMode) scene.add(ghostModel); // Only add if in planting mode
+  });
+}
+
+function onPlantChange() {
+  const selectedPlantType = document.getElementById('plantSelect').value;
+  loadGhostModel(selectedPlantType);
+}
+
+function onMouseMove(event) {
+  if (!isPlantingMode || !ghostModel) return;
+
+  const mouse = new THREE.Vector2(
+    (event.clientX / window.innerWidth) * 2 - 1,
+    -(event.clientY / window.innerHeight) * 2 + 1
+  );
+
+  const raycaster = new THREE.Raycaster();
+  raycaster.setFromCamera(mouse, camera);
+
+  const intersects = raycaster.intersectObjects([baseplate]);
+  if (intersects.length > 0) {
+    const intersect = intersects[0];
+    ghostModel.position.copy(intersect.point);
+    ghostModel.position.y += 0.01;
+    ghostModel.visible = true; // Make sure the ghost model is visible while on baseplate
+  } else {
+    ghostModel.visible = false; // Hide ghost model when off the baseplate
+  }
+}
+
 function onLeftClick(event) {
-  if (!isPlantingMode) return;
+  if (!isPlantingMode || !ghostModel) return;
 
   const mouse = new THREE.Vector2(
     (event.clientX / window.innerWidth) * 2 - 1,
@@ -77,10 +122,9 @@ function onLeftClick(event) {
   }
 }
 
-// Right-click function to delete a plant
 function onRightClick(event) {
   if (!isPlantingMode) return;
-  event.preventDefault();  // Prevent the context menu from opening
+  event.preventDefault();
 
   const mouse = new THREE.Vector2(
     (event.clientX / window.innerWidth) * 2 - 1,
@@ -90,55 +134,40 @@ function onRightClick(event) {
   const raycaster = new THREE.Raycaster();
   raycaster.setFromCamera(mouse, camera);
 
-  // Raycast to find intersected objects
   const intersects = raycaster.intersectObjects(scene.children, true);
   if (intersects.length > 0) {
-    // Find the root object to remove
     let intersectedObject = intersects[0].object;
 
-    // Traverse up to the root (to ensure we delete the entire model)
     while (intersectedObject.parent && intersectedObject.parent !== scene) {
       intersectedObject = intersectedObject.parent;
     }
 
-    // Check if the object is part of the placedObjects array
     const objectIndex = placedObjects.indexOf(intersectedObject);
     if (objectIndex !== -1) {
-      scene.remove(intersectedObject); // Remove from scene
-      placedObjects.splice(objectIndex, 1); // Remove from tracking array
-      console.log('Object removed:', intersectedObject); // Debugging
-    } else {
-      console.log('Clicked on baseplate or untracked object, no deletion'); // Debugging
+      scene.remove(intersectedObject);
+      placedObjects.splice(objectIndex, 1);
     }
-  } else {
-    console.log('No object detected to delete'); // Debugging
   }
 }
 
-// Function to create and place a plant
 function createPlant(type, position) {
-  if (type === 'oak_tree') {
-    loader.load('../models/oak_tree/scene.gltf', (gltf) => {
-      const plant = gltf.scene;
-      plant.position.copy(position);
-      plant.scale.set(scaleFactor, scaleFactor, scaleFactor); // Apply scale factor uniformly
-      scene.add(plant);
-      placedObjects.push(plant); // Track the model root
-    });
-  } else if (type === 'tall_bush') {
-    loader.load('../models/tall_bush/scene.gltf', (gltf) => {
-      const plant = gltf.scene;
-      plant.position.copy(position);
-      plant.scale.set(0.5 * scaleFactor, 0.5 * scaleFactor, 0.5 * scaleFactor); // Apply scale factor
-      scene.add(plant);
-      placedObjects.push(plant); // Track the model root
-    });
-  }
+  const modelPath = type === 'oak_tree' ? '../models/oak_tree/scene.gltf' : '../models/tall_bush/scene.gltf';
+  const scaleFactor = scaleFactors[type];
+
+  loader.load(modelPath, (gltf) => {
+    const plant = gltf.scene;
+    plant.position.copy(position);
+    plant.scale.set(scaleFactor, scaleFactor, scaleFactor);
+    scene.add(plant);
+    placedObjects.push(plant);
+  });
 }
 
 function toggleViewMode() {
   isPlantingMode = !isPlantingMode;
   controls.enabled = !isPlantingMode;
+
+  if (ghostModel) ghostModel.visible = isPlantingMode; // Show ghost only in planting mode
   document.getElementById('toggleView').textContent = isPlantingMode ? 'Switch to View Mode' : 'Switch to Planting Mode';
 }
 
