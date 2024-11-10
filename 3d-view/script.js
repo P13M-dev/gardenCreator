@@ -1,73 +1,74 @@
-// script.js
+  import * as THREE from 'https://cdn.skypack.dev/three@0.128.0/build/three.module.js';
+  import { OrbitControls } from 'https://cdn.skypack.dev/three@0.128.0/examples/jsm/controls/OrbitControls.js';
+  import { GLTFLoader } from 'https://cdn.skypack.dev/three@0.128.0/examples/jsm/loaders/GLTFLoader.js';
 
-import * as THREE from 'https://cdn.skypack.dev/three@0.128.0/build/three.module.js';
-import { OrbitControls } from 'https://cdn.skypack.dev/three@0.128.0/examples/jsm/controls/OrbitControls.js';
-import { GLTFLoader } from 'https://cdn.skypack.dev/three@0.128.0/examples/jsm/loaders/GLTFLoader.js';
+  let scene, camera, renderer, controls;
+  let isPlantingMode = true;
+  let baseplate;
+  const loader = new GLTFLoader();
+  const placedObjects = [];
+  let ghostModel = null;
+  let currentRotationY = 0;
 
-let scene, camera, renderer, controls;
-let isPlantingMode = true;
-let baseplate;
-const loader = new GLTFLoader();
-const placedObjects = [];
-let ghostModel = null;
-let currentRotationY = 0; // Track the Y-axis rotation angle of the model
+  const modelsData = {
+    oak_tree: { path: '../models/oak_tree/scene.gltf', displayName: 'Oak Tree', realHeight: 15 },
+    tall_bush: { path: '../models/tall_bush/scene.gltf', displayName: 'Tall Bush', realHeight: 2 },
+    thuya: { path: '../models/thuya/scene.gltf', displayName: 'Tuja (Arborvitae)', realHeight: 3.5 },
+    buxus: { path: '../models/buxus/scene.gltf', displayName: 'Bukszpan (Buxus)', realHeight: 1 }
+  };
 
-// Models data with real-world sizes in meters
-const modelsData = {
-  oak_tree: { path: '../models/oak_tree/scene.gltf', displayName: 'Dąb', realHeight: 15 },
-  tall_bush: { path: '../models/tall_bush/scene.gltf', displayName: 'Bukszpan', realHeight: 2 },
-  thuya: { path: '../models/thuya/scene.gltf', displayName: 'Tuja (Arborvitae)', realHeight: 3.5 },
-  buxus: { path: '../models/buxus/scene.gltf', displayName: 'Bukszpan (Buxus)', realHeight: 1 }
-};
+  let plannerContainer;
 
-function init() {
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xa0c8ff);
+  function init() {
+    plannerContainer = document.getElementById('planner');
 
-  camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera.position.set(30, 15, 20);
-  camera.lookAt(0, 0, 0);
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xa0c8ff);
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setPixelRatio(window.devicePixelRatio);
-  document.body.appendChild(renderer.domElement);
+    camera = new THREE.PerspectiveCamera(45, plannerContainer.clientWidth / plannerContainer.clientHeight, 0.1, 1000);
+    camera.position.set(30, 15, 20);
+    camera.lookAt(0, 0, 0);
 
-  const ambientLight = new THREE.AmbientLight(0xffffff, 1);
-  scene.add(ambientLight);
-  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-  directionalLight.position.set(10, 20, 10);
-  scene.add(directionalLight);
+    renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(plannerContainer.clientWidth, plannerContainer.clientHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    plannerContainer.appendChild(renderer.domElement);
 
-  const baseGeometry = new THREE.PlaneGeometry(20, 20);
-  const baseMaterial = new THREE.MeshLambertMaterial({ color: 0x382014, side: THREE.DoubleSide });
-  baseplate = new THREE.Mesh(baseGeometry, baseMaterial);
-  baseplate.rotation.x = -Math.PI / 2;
-  scene.add(baseplate);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+    scene.add(ambientLight);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+    directionalLight.position.set(10, 20, 10);
+    scene.add(directionalLight);
 
-  controls = new OrbitControls(camera, renderer.domElement);
-  controls.enableDamping = true;
-  controls.enabled = false;
+    const baseGeometry = new THREE.PlaneGeometry(20, 20);
+    const baseMaterial = new THREE.MeshLambertMaterial({ color: 0x382014, side: THREE.DoubleSide });
+    baseplate = new THREE.Mesh(baseGeometry, baseMaterial);
+    baseplate.rotation.x = -Math.PI / 2;
+    scene.add(baseplate);
 
-  populateDropdown();
-  loadGhostModel(document.getElementById('plantSelect').value);
+    controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.enabled = false;
 
-  document.getElementById('toggleView').addEventListener('click', toggleViewMode);
-  document.getElementById('backButton').addEventListener('click', backButtonWorkPls);
-  document.getElementById('plantSelect').addEventListener('change', onPlantChange);
+    populateDropdown();
+    loadGhostModel(document.getElementById('plantSelect').value);
 
-  window.addEventListener('click', onLeftClick);
-  window.addEventListener('contextmenu', onRightClick);
-  window.addEventListener('mousemove', onMouseMove);
-  window.addEventListener('resize', onWindowResize);
-  window.addEventListener('keydown', onRotateKeyPress); // New event for rotation control
+    document.getElementById('toggleView').addEventListener('click', toggleViewMode);
+    document.getElementById('backButton').addEventListener('click', backButtonWorkPls);
+    document.getElementById('plantSelect').addEventListener('change', onPlantChange);
 
-  renderer.setAnimationLoop(render);
-}
+    window.addEventListener('click', onLeftClick);
+    window.addEventListener('contextmenu', onRightClick);
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('resize', onWindowResize);
+    window.addEventListener('keydown', onRotateKeyPress);
+
+    renderer.setAnimationLoop(render);
+  }
 
 function onWindowResize() {
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  camera.aspect = window.innerWidth / window.innerHeight;
+  renderer.setSize(plannerContainer.clientWidth, plannerContainer.clientHeight);
+  camera.aspect = plannerContainer.clientWidth / plannerContainer.clientHeight;
   camera.updateProjectionMatrix();
   controls.update();
 }
@@ -82,6 +83,14 @@ function populateDropdown() {
     option.textContent = modelsData[modelKey].displayName;
     selectElement.appendChild(option);
   }
+}
+
+function getRelativeMouse(event) {
+  const rect = plannerContainer.getBoundingClientRect();
+  return new THREE.Vector2(
+    ((event.clientX - rect.left) / rect.width) * 2 - 1,
+    -((event.clientY - rect.top) / rect.height) * 2 + 1
+  );
 }
 
 function loadGhostModel(type) {
@@ -103,52 +112,40 @@ function loadGhostModel(type) {
       }
     });
 
-    // Apply scale based on real-world height
     const boundingBox = new THREE.Box3().setFromObject(ghostModel);
     const modelHeight = boundingBox.max.y - boundingBox.min.y;
     const scaleFactor = modelInfo.realHeight / modelHeight;
     ghostModel.scale.set(scaleFactor, scaleFactor, scaleFactor);
-
-    ghostModel.rotation.y = currentRotationY; // Apply the current rotation to the ghost model
+    ghostModel.rotation.y = currentRotationY;
     if (isPlantingMode) scene.add(ghostModel);
   });
 }
 
 function onPlantChange() {
-  const selectedPlantType = document.getElementById('plantSelect').value;
-  loadGhostModel(selectedPlantType);
+  loadGhostModel(document.getElementById('plantSelect').value);
 }
 
 function onRotateKeyPress(event) {
   if (!isPlantingMode || !ghostModel) return;
 
-  const rotationStep = Math.PI / 16; // 11.25 degrees per key press
+  const rotationStep = Math.PI / 16;
+  if (event.key === 'ArrowLeft') currentRotationY -= rotationStep;
+  if (event.key === 'ArrowRight') currentRotationY += rotationStep;
 
-  if (event.key === 'ArrowLeft') {
-    currentRotationY -= rotationStep; // Rotate left
-  } else if (event.key === 'ArrowRight') {
-    currentRotationY += rotationStep; // Rotate right
-  }
-
-  // Apply the updated rotation to the ghost model
   ghostModel.rotation.y = currentRotationY;
 }
 
 function onMouseMove(event) {
   if (!isPlantingMode || !ghostModel) return;
 
-  const mouse = new THREE.Vector2(
-    (event.clientX / window.innerWidth) * 2 - 1,
-    -(event.clientY / window.innerHeight) * 2 + 1
-  );
+  const mouse = getRelativeMouse(event);
 
   const raycaster = new THREE.Raycaster();
   raycaster.setFromCamera(mouse, camera);
 
   const intersects = raycaster.intersectObjects([baseplate]);
   if (intersects.length > 0) {
-    const intersect = intersects[0];
-    ghostModel.position.copy(intersect.point);
+    ghostModel.position.copy(intersects[0].point);
     ghostModel.position.y += 0.01;
     ghostModel.visible = true;
   } else {
@@ -159,38 +156,26 @@ function onMouseMove(event) {
 function onLeftClick(event) {
   if (!isPlantingMode || !ghostModel) return;
 
-  const mouse = new THREE.Vector2(
-    (event.clientX / window.innerWidth) * 2 - 1,
-    -(event.clientY / window.innerHeight) * 2 + 1
-  );
+  const mouse = getRelativeMouse(event);
 
   const raycaster = new THREE.Raycaster();
   raycaster.setFromCamera(mouse, camera);
 
   const intersects = raycaster.intersectObjects([baseplate]);
-  if (intersects.length > 0) {
-    const intersect = intersects[0];
-    const plantType = document.getElementById('plantSelect').value;
-
-    createPlant(plantType, intersect.point);
-  }
+  if (intersects.length > 0) createPlant(document.getElementById('plantSelect').value, intersects[0].point);
 }
+
 function onRightClick(event) {
   if (!isPlantingMode) return;
   event.preventDefault();
 
-  const mouse = new THREE.Vector2(
-    (event.clientX / window.innerWidth) * 2 - 1,
-    -(event.clientY / window.innerHeight) * 2 + 1
-  );
-
+  const mouse = getRelativeMouse(event);
   const raycaster = new THREE.Raycaster();
   raycaster.setFromCamera(mouse, camera);
 
   const intersects = raycaster.intersectObjects(scene.children, true);
   if (intersects.length > 0) {
     let intersectedObject = intersects[0].object;
-
     while (intersectedObject.parent && intersectedObject.parent !== scene) {
       intersectedObject = intersectedObject.parent;
     }
@@ -210,14 +195,13 @@ function createPlant(type, position) {
   loader.load(modelInfo.path, (gltf) => {
     const plant = gltf.scene;
 
-    // Apply scale based on real-world height
     const boundingBox = new THREE.Box3().setFromObject(plant);
     const modelHeight = boundingBox.max.y - boundingBox.min.y;
     const scaleFactor = modelInfo.realHeight / modelHeight;
     plant.scale.set(scaleFactor, scaleFactor, scaleFactor);
 
     plant.position.copy(position);
-    plant.rotation.y = currentRotationY; // Apply the current rotation to the placed model
+    plant.rotation.y = currentRotationY;
     scene.add(plant);
     placedObjects.push(plant);
   });
@@ -227,15 +211,7 @@ function toggleViewMode() {
   isPlantingMode = !isPlantingMode;
   controls.enabled = !isPlantingMode;
 
-  if (ghostModel) {
-    if (isPlantingMode) {
-      scene.add(ghostModel);
-      ghostModel.visible = true;
-    } else {
-      ghostModel.visible = false;
-    }
-  }
-
+  if (ghostModel) ghostModel.visible = isPlantingMode;
   document.getElementById('toggleView').textContent = isPlantingMode ? 'Switch to View Mode' : 'Switch to Planting Mode';
 }
 

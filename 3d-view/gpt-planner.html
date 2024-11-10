@@ -7,15 +7,28 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div id="controls">
+  <div id="sidebar">
     <label for="plantSelect">Choose a plant:</label>
     <select id="plantSelect">
       <option value="oak_tree">Oak Tree</option>
       <option value="tall_bush">Tall Bush</option>
+      <option value="thuya">Tuja (Arborvitae)</option>
+      <option value="buxus">Bukszpan (Buxus)</option>
     </select>
-    <button id="toggleView" style="margin-left: 10px;">Toggle View Mode</button>
-    <button id="backButton" style="margin-left: 10px;">Go back</button>
+    <button id="toggleView" style="margin-top: 10px;">Toggle View Mode</button>
+    <button id="backButton" style="margin-top: 10px;">Go back</button>
   </div>
+
+  <div id="planner"></div>
+
+  <!-- Bottom toolbar for mobile controls -->
+  <div id="bottom-toolbar">
+    <button id="placeMode">Place</button>
+    <button id="deleteMode">Delete</button>
+    <button id="rotateLeft">Rotate Left</button>
+    <button id="rotateRight">Rotate Right</button>
+  </div>
+
   <script type="module" src="script.js"></script>
 </body>
 </html>
