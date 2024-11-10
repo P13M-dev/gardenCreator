@@ -10,13 +10,14 @@ let baseplate;
 const loader = new GLTFLoader();
 const placedObjects = [];
 let ghostModel = null;
+let currentRotationY = 0; // Track the Y-axis rotation angle of the model
 
 // Models data with real-world sizes in meters
 const modelsData = {
-  oak_tree: { path: '../models/oak_tree/scene.gltf', displayName: 'Oak Tree', realHeight: 15 },
-  tall_bush: { path: '../models/tall_bush/scene.gltf', displayName: 'Tall Bush', realHeight: 2 },
-  thuya: {path: '../models/thuya/scene.gltf ', scale: 2, displayName: 'Tuja (Arborvitae)', realHeight: 6 },
-  // Add more plants with their actual sizes here
+  oak_tree: { path: '../models/oak_tree/scene.gltf', displayName: 'Dąb', realHeight: 15 },
+  tall_bush: { path: '../models/tall_bush/scene.gltf', displayName: 'Bukszpan', realHeight: 2 },
+  thuya: { path: '../models/thuya/scene.gltf', displayName: 'Tuja (Arborvitae)', realHeight: 3.5 },
+  buxus: { path: '../models/buxus/scene.gltf', displayName: 'Bukszpan (Buxus)', realHeight: 1 }
 };
 
 function init() {
@@ -59,11 +60,11 @@ function init() {
   window.addEventListener('contextmenu', onRightClick);
   window.addEventListener('mousemove', onMouseMove);
   window.addEventListener('resize', onWindowResize);
+  window.addEventListener('keydown', onRotateKeyPress); // New event for rotation control
 
   renderer.setAnimationLoop(render);
 }
 
-// Function to handle resizing
 function onWindowResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   camera.aspect = window.innerWidth / window.innerHeight;
@@ -71,7 +72,6 @@ function onWindowResize() {
   controls.update();
 }
 
-// Populate dropdown dynamically based on modelsData
 function populateDropdown() {
   const selectElement = document.getElementById('plantSelect');
   selectElement.innerHTML = '';
@@ -84,7 +84,6 @@ function populateDropdown() {
   }
 }
 
-// Load ghost model with proper scale based on real-world size
 function loadGhostModel(type) {
   if (ghostModel) {
     scene.remove(ghostModel);
@@ -110,6 +109,7 @@ function loadGhostModel(type) {
     const scaleFactor = modelInfo.realHeight / modelHeight;
     ghostModel.scale.set(scaleFactor, scaleFactor, scaleFactor);
 
+    ghostModel.rotation.y = currentRotationY; // Apply the current rotation to the ghost model
     if (isPlantingMode) scene.add(ghostModel);
   });
 }
@@ -117,6 +117,21 @@ function loadGhostModel(type) {
 function onPlantChange() {
   const selectedPlantType = document.getElementById('plantSelect').value;
   loadGhostModel(selectedPlantType);
+}
+
+function onRotateKeyPress(event) {
+  if (!isPlantingMode || !ghostModel) return;
+
+  const rotationStep = Math.PI / 16; // 11.25 degrees per key press
+
+  if (event.key === 'ArrowLeft') {
+    currentRotationY -= rotationStep; // Rotate left
+  } else if (event.key === 'ArrowRight') {
+    currentRotationY += rotationStep; // Rotate right
+  }
+
+  // Apply the updated rotation to the ghost model
+  ghostModel.rotation.y = currentRotationY;
 }
 
 function onMouseMove(event) {
@@ -141,6 +156,25 @@ function onMouseMove(event) {
   }
 }
 
+function onLeftClick(event) {
+  if (!isPlantingMode || !ghostModel) return;
+
+  const mouse = new THREE.Vector2(
+    (event.clientX / window.innerWidth) * 2 - 1,
+    -(event.clientY / window.innerHeight) * 2 + 1
+  );
+
+  const raycaster = new THREE.Raycaster();
+  raycaster.setFromCamera(mouse, camera);
+
+  const intersects = raycaster.intersectObjects([baseplate]);
+  if (intersects.length > 0) {
+    const intersect = intersects[0];
+    const plantType = document.getElementById('plantSelect').value;
+
+    createPlant(plantType, intersect.point);
+  }
+}
 function onRightClick(event) {
   if (!isPlantingMode) return;
   event.preventDefault();
@@ -169,29 +203,6 @@ function onRightClick(event) {
   }
 }
 
-
-// Left-click function to place a scaled model
-function onLeftClick(event) {
-  if (!isPlantingMode || !ghostModel) return;
-
-  const mouse = new THREE.Vector2(
-    (event.clientX / window.innerWidth) * 2 - 1,
-    -(event.clientY / window.innerHeight) * 2 + 1
-  );
-
-  const raycaster = new THREE.Raycaster();
-  raycaster.setFromCamera(mouse, camera);
-
-  const intersects = raycaster.intersectObjects([baseplate]);
-  if (intersects.length > 0) {
-    const intersect = intersects[0];
-    const plantType = document.getElementById('plantSelect').value;
-
-    createPlant(plantType, intersect.point);
-  }
-}
-
-// Place model with real-world scaling
 function createPlant(type, position) {
   const modelInfo = modelsData[type];
   if (!modelInfo) return;
@@ -206,6 +217,7 @@ function createPlant(type, position) {
     plant.scale.set(scaleFactor, scaleFactor, scaleFactor);
 
     plant.position.copy(position);
+    plant.rotation.y = currentRotationY; // Apply the current rotation to the placed model
     scene.add(plant);
     placedObjects.push(plant);
   });
@@ -215,13 +227,12 @@ function toggleViewMode() {
   isPlantingMode = !isPlantingMode;
   controls.enabled = !isPlantingMode;
 
-  // Toggle the visibility of the ghost model based on the mode
   if (ghostModel) {
     if (isPlantingMode) {
-      scene.add(ghostModel);  // Add the ghost model back to the scene when in planting mode
-      ghostModel.visible = true;  // Ensure the ghost model is visible
+      scene.add(ghostModel);
+      ghostModel.visible = true;
     } else {
-      ghostModel.visible = false;  // Hide the ghost model when switching to view mode
+      ghostModel.visible = false;
     }
   }
 
