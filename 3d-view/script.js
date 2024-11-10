@@ -56,7 +56,7 @@ function init() {
   document.getElementById('plantSelect').addEventListener('change', onPlantChange);
 
   window.addEventListener('click', onLeftClick);
-  // window.addEventListener('contextmenu', onRightClick);
+  window.addEventListener('contextmenu', onRightClick);
   window.addEventListener('mousemove', onMouseMove);
   window.addEventListener('resize', onWindowResize);
 
@@ -140,6 +140,35 @@ function onMouseMove(event) {
     ghostModel.visible = false;
   }
 }
+
+function onRightClick(event) {
+  if (!isPlantingMode) return;
+  event.preventDefault();
+
+  const mouse = new THREE.Vector2(
+    (event.clientX / window.innerWidth) * 2 - 1,
+    -(event.clientY / window.innerHeight) * 2 + 1
+  );
+
+  const raycaster = new THREE.Raycaster();
+  raycaster.setFromCamera(mouse, camera);
+
+  const intersects = raycaster.intersectObjects(scene.children, true);
+  if (intersects.length > 0) {
+    let intersectedObject = intersects[0].object;
+
+    while (intersectedObject.parent && intersectedObject.parent !== scene) {
+      intersectedObject = intersectedObject.parent;
+    }
+
+    const objectIndex = placedObjects.indexOf(intersectedObject);
+    if (objectIndex !== -1) {
+      scene.remove(intersectedObject);
+      placedObjects.splice(objectIndex, 1);
+    }
+  }
+}
+
 
 // Left-click function to place a scaled model
 function onLeftClick(event) {
