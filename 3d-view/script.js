@@ -185,7 +185,17 @@ function createPlant(type, position) {
 function toggleViewMode() {
   isPlantingMode = !isPlantingMode;
   controls.enabled = !isPlantingMode;
-  if (ghostModel) ghostModel.visible = isPlantingMode;
+
+  // Toggle the visibility of the ghost model based on the mode
+  if (ghostModel) {
+    if (isPlantingMode) {
+      scene.add(ghostModel);  // Add the ghost model back to the scene when in planting mode
+      ghostModel.visible = true;  // Ensure the ghost model is visible
+    } else {
+      ghostModel.visible = false;  // Hide the ghost model when switching to view mode
+    }
+  }
+
   document.getElementById('toggleView').textContent = isPlantingMode ? 'Switch to View Mode' : 'Switch to Planting Mode';
 }
 
