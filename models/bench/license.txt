@@ -1,0 +1,11 @@
+Model Information:
+* title:	Bench [LowPoly]
+* source:	https://sketchfab.com/3d-models/bench-lowpoly-97bc9b936c1146128e2bebf7959cdc66
+* author:	John Trent (https://sketchfab.com/brjce)
+
+Model License:
+* license type:	CC-BY-NC-4.0 (http://creativecommons.org/licenses/by-nc/4.0/)
+* requirements:	Author must be credited. No commercial use.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Bench [LowPoly]" (https://sketchfab.com/3d-models/bench-lowpoly-97bc9b936c1146128e2bebf7959cdc66) by John Trent (https://sketchfab.com/brjce) licensed under CC-BY-NC-4.0 (http://creativecommons.org/licenses/by-nc/4.0/)

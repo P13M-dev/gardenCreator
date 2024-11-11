@@ -18,7 +18,8 @@ const modelsData = {
   oak_tree: { path: '../models/oak_tree/scene.gltf', displayName: 'Oak Tree', realHeight: 15 },
   tall_bush: { path: '../models/tall_bush/scene.gltf', displayName: 'Tall Bush', realHeight: 2 },
   thuya: { path: '../models/thuya/scene.gltf', displayName: 'Tuja (Arborvitae)', realHeight: 3.5 },
-  buxus: { path: '../models/buxus/scene.gltf', displayName: 'Bukszpan (Buxus)', realHeight: 1 }
+  buxus: { path: '../models/buxus/scene.gltf', displayName: 'Bukszpan (Buxus)', realHeight: 1 },
+  bench: { path: '../models/bench/scene.gltf', displayName: 'Ławka (Bench)', realHeight: 0.9 }
 };
 
 let plannerContainer;
@@ -41,59 +42,74 @@ function initToolbar() {
 }
 
 function setMode(mode) {
-  currentMode = mode;
+    currentMode = mode;
 
-  // Update button states
-  modes.forEach(m => {
-      const button = document.getElementById(`${m}-mode`);
-      button.classList.toggle('active', m === mode);
-  });
+    // Update button states
+    modes.forEach(m => {
+        const button = document.getElementById(`${m}-mode`);
+        button.classList.toggle('active', m === mode);
+    });
 
-  // Always hide ghost model by default
-  if (ghostModel) {
-      ghostModel.visible = false;
-  }
+    // Always hide ghost model by default
+    if (ghostModel) {
+        ghostModel.visible = false;
+    }
 
-  // Update mode-specific settings
-  switch(mode) {
-      case 'rotate3d':
-          renderer.domElement.style.cursor = 'grab';
-          controls.enabled = true;
-          controls.enableRotate = true;
-          controls.enablePan = false;
-          controls.enableZoom = true;
-          controls.mouseButtons = {
-              LEFT: THREE.MOUSE.ROTATE,
-              MIDDLE: THREE.MOUSE.DOLLY,
-              RIGHT: THREE.MOUSE.ROTATE
-          };
-          break;
-      case 'move':
-          renderer.domElement.style.cursor = 'move';
-          controls.enabled = true;
-          controls.enableRotate = false;
-          controls.enablePan = true;
-          controls.enableZoom = false;
-          controls.mouseButtons = {
-              LEFT: THREE.MOUSE.PAN,
-              MIDDLE: THREE.MOUSE.DOLLY,
-              RIGHT: THREE.MOUSE.PAN
-          };
-          break;
-      case 'place':
-          renderer.domElement.style.cursor = 'crosshair';
-          controls.enabled = false;
-          if (ghostModel) {
-              ghostModel.visible = true;
-          }
-          break;
-      case 'delete':
-          renderer.domElement.style.cursor = 'pointer';
-          controls.enabled = false;
-          break;
-  }
+    // Update mode-specific settings
+    switch(mode) {
+        case 'rotate3d':
+            renderer.domElement.style.cursor = 'grab';
+            controls.enabled = true;
+            controls.enableRotate = true;
+            controls.enablePan = false;
+            controls.enableZoom = true;
+            controls.mouseButtons = {
+                LEFT: THREE.MOUSE.ROTATE,
+                MIDDLE: THREE.MOUSE.DOLLY,
+                RIGHT: THREE.MOUSE.ROTATE
+            };
+            break;
+        case 'move':
+            renderer.domElement.style.cursor = 'move';
+            controls.enabled = true;
+            controls.enableRotate = false;
+            controls.enablePan = true;
+            controls.enableZoom = true;
+            controls.mouseButtons = {
+                LEFT: THREE.MOUSE.PAN,
+                MIDDLE: THREE.MOUSE.DOLLY,
+                RIGHT: THREE.MOUSE.PAN
+            };
+            break;
+        case 'place':
+            renderer.domElement.style.cursor = 'crosshair';
+            controls.enabled = true;
+            controls.enableRotate = false;
+            controls.enablePan = false;
+            controls.enableZoom = true;
+            if (ghostModel) {
+                ghostModel.visible = true;
+            }
+            controls.mouseButtons = {
+                LEFT: THREE.MOUSE.ROTATE,
+                MIDDLE: THREE.MOUSE.DOLLY,
+                RIGHT: THREE.MOUSE.ROTATE
+            };
+            break;
+        case 'delete':
+            renderer.domElement.style.cursor = 'pointer';
+            controls.enabled = true;
+            controls.enableRotate = false;
+            controls.enablePan = false;
+            controls.enableZoom = true;
+            controls.mouseButtons = {
+                LEFT: THREE.MOUSE.ROTATE,
+                MIDDLE: THREE.MOUSE.DOLLY,
+                RIGHT: THREE.MOUSE.ROTATE
+            };
+            break;
+    }
 }
-
 
 function handleRotate(direction) {
   if (!ghostModel || currentMode !== 'place') return;
@@ -386,6 +402,7 @@ controls.enabled = !isPlantingMode;
 if (ghostModel) ghostModel.visible = isPlantingMode;
 document.getElementById('toggleView').textContent = isPlantingMode ? 'Switch to View Mode' : 'Switch to Planting Mode';
 }
+
 
 function backButtonWorkPls() {
 window.location.replace("../index.html");
