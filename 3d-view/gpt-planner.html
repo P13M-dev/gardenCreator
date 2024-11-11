@@ -1,34 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Garden Planner</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Garden Planner</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div id="sidebar">
-    <label for="plantSelect">Choose a plant:</label>
-    <select id="plantSelect">
-      <option value="oak_tree">Oak Tree</option>
-      <option value="tall_bush">Tall Bush</option>
-      <option value="thuya">Tuja (Arborvitae)</option>
-      <option value="buxus">Bukszpan (Buxus)</option>
-    </select>
-    <button id="toggleView" style="margin-top: 10px;">Toggle View Mode</button>
-    <button id="backButton" style="margin-top: 10px;">Go back</button>
-  </div>
+    <div id="planner"></div>
 
-  <div id="planner"></div>
+    <div class="toolbar">
+        <button id="rotate3d-mode" class="toolbar-btn" title="3D Rotation Mode">
+            <i class="fas fa-cube"></i>
+        </button>
+        <button id="move-mode" class="toolbar-btn" title="Move Mode">
+            <i class="fas fa-arrows-alt"></i>
+        </button>
+        <button id="place-mode" class="toolbar-btn active" title="Place Object Mode">
+            <i class="fas fa-plus-square"></i>
+        </button>
+        <button id="delete-mode" class="toolbar-btn" title="Delete Mode">
+            <i class="fas fa-trash-alt"></i>
+        </button>
+        <button id="rotate-left" class="toolbar-btn" title="Rotate Left">
+            <i class="fas fa-undo"></i>
+        </button>
+        <button id="rotate-right" class="toolbar-btn" title="Rotate Right">
+            <i class="fas fa-redo"></i>
+        </button>
+        <button id="menu-toggle" class="toolbar-btn" title="Menu">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
 
-  <!-- Bottom toolbar for mobile controls -->
-  <div id="bottom-toolbar">
-    <button id="placeMode">Place</button>
-    <button id="deleteMode">Delete</button>
-    <button id="rotateLeft">Rotate Left</button>
-    <button id="rotateRight">Rotate Right</button>
-  </div>
+    <div id="side-menu" class="side-menu">
+        <div class="menu-header">
+            <h2>Garden Planner Menu</h2>
+            <button id="close-menu" class="close-btn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="menu-content">
+            <select id="plantSelect">
+                <option value="oak_tree">Oak Tree</option>
+                <option value="tall_bush">Tall Bush</option>
+                <option value="thuya">Tuja (Arborvitae)</option>
+                <option value="buxus">Bukszpan (Buxus)</option>
+            </select>
+            <!-- Add more menu items as needed -->
+        </div>
+    </div>
 
-  <script type="module" src="script.js"></script>
+    <script type="module" src="script.js"></script>
 </body>
 </html>

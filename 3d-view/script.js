@@ -9,6 +9,10 @@ const loader = new GLTFLoader();
 const placedObjects = [];
 let ghostModel = null;
 let currentRotationY = 0;
+let isDragging = false;
+let previousMousePosition = { x: 0, y: 0 };
+let currentMode = 'place';
+const modes = ['rotate3d', 'move', 'place', 'delete'];
 
 const modelsData = {
   oak_tree: { path: '../models/oak_tree/scene.gltf', displayName: 'Oak Tree', realHeight: 15 },
@@ -18,6 +22,93 @@ const modelsData = {
 };
 
 let plannerContainer;
+
+// Add these functions to handle the toolbar
+function initToolbar() {
+  // Mode buttons
+  modes.forEach(mode => {
+      const button = document.getElementById(`${mode}-mode`);
+      button.addEventListener('click', () => setMode(mode));
+  });
+
+  // Rotation buttons
+  document.getElementById('rotate-left').addEventListener('click', () => handleRotate('left'));
+  document.getElementById('rotate-right').addEventListener('click', () => handleRotate('right'));
+
+  // Menu button
+  document.getElementById('menu-toggle').addEventListener('click', toggleMenu);
+  document.getElementById('close-menu').addEventListener('click', toggleMenu);
+}
+
+function setMode(mode) {
+  currentMode = mode;
+
+  // Update button states
+  modes.forEach(m => {
+      const button = document.getElementById(`${m}-mode`);
+      button.classList.toggle('active', m === mode);
+  });
+
+  // Always hide ghost model by default
+  if (ghostModel) {
+      ghostModel.visible = false;
+  }
+
+  // Update mode-specific settings
+  switch(mode) {
+      case 'rotate3d':
+          renderer.domElement.style.cursor = 'grab';
+          controls.enabled = true;
+          controls.enableRotate = true;
+          controls.enablePan = false;
+          controls.enableZoom = true;
+          controls.mouseButtons = {
+              LEFT: THREE.MOUSE.ROTATE,
+              MIDDLE: THREE.MOUSE.DOLLY,
+              RIGHT: THREE.MOUSE.ROTATE
+          };
+          break;
+      case 'move':
+          renderer.domElement.style.cursor = 'move';
+          controls.enabled = true;
+          controls.enableRotate = false;
+          controls.enablePan = true;
+          controls.enableZoom = false;
+          controls.mouseButtons = {
+              LEFT: THREE.MOUSE.PAN,
+              MIDDLE: THREE.MOUSE.DOLLY,
+              RIGHT: THREE.MOUSE.PAN
+          };
+          break;
+      case 'place':
+          renderer.domElement.style.cursor = 'crosshair';
+          controls.enabled = false;
+          if (ghostModel) {
+              ghostModel.visible = true;
+          }
+          break;
+      case 'delete':
+          renderer.domElement.style.cursor = 'pointer';
+          controls.enabled = false;
+          break;
+  }
+}
+
+
+function handleRotate(direction) {
+  if (!ghostModel || currentMode !== 'place') return;
+  
+  const rotationStep = Math.PI / 16;
+  if (direction === 'left') currentRotationY -= rotationStep;
+  if (direction === 'right') currentRotationY += rotationStep;
+  
+  ghostModel.rotation.y = currentRotationY;
+}
+
+function toggleMenu() {
+  const menu = document.getElementById('side-menu');
+  menu.classList.toggle('open');
+}
 
 function init() {
   plannerContainer = document.getElementById('planner');
@@ -47,23 +138,33 @@ function init() {
   scene.add(baseplate);
 
   controls = new OrbitControls(camera, renderer.domElement);
-  controls.enableDamping = true;
-  controls.enabled = false;
+    controls.enableDamping = true;
+    controls.enabled = false;
+    // Change mouse buttons configuration
+    controls.mouseButtons = {
+        LEFT: THREE.MOUSE.ROTATE,    // For rotate mode
+        MIDDLE: THREE.MOUSE.DOLLY,   // Keep middle mouse for zoom if needed
+        RIGHT: THREE.MOUSE.ROTATE    // Make right do the same as left for convenience
+    };
 
   populateDropdown();
   loadGhostModel(document.getElementById('plantSelect').value);
 
-  document.getElementById('toggleView').addEventListener('click', toggleViewMode);
-  document.getElementById('backButton').addEventListener('click', backButtonWorkPls);
+  // document.getElementById('toggleView').addEventListener('click', toggleViewMode);
+  // document.getElementById('backButton').addEventListener('click', backButtonWorkPls);
   document.getElementById('plantSelect').addEventListener('change', onPlantChange);
 
   window.addEventListener('click', onLeftClick);
-  window.addEventListener('contextmenu', onRightClick);
   window.addEventListener('mousemove', onMouseMove);
   window.addEventListener('resize', onWindowResize);
   window.addEventListener('keydown', onRotateKeyPress);
 
+  // Prevent context menu from appearing
+  window.addEventListener('contextmenu', (e) => e.preventDefault());
+
   renderer.setAnimationLoop(render);
+    initToolbar();
+    setMode('place'); // Set initial mod
 }
 
 function onWindowResize() {
@@ -92,33 +193,35 @@ return new THREE.Vector2(
   -((event.clientY - rect.top) / rect.height) * 2 + 1
 );
 }
-
 function loadGhostModel(type) {
-if (ghostModel) {
-  scene.remove(ghostModel);
-  ghostModel = null;
-}
+  if (ghostModel) {
+      scene.remove(ghostModel);
+      ghostModel = null;
+  }
 
-const modelInfo = modelsData[type];
-if (!modelInfo) return;
+  const modelInfo = modelsData[type];
+  if (!modelInfo) return;
 
-loader.load(modelInfo.path, (gltf) => {
-  ghostModel = gltf.scene;
-  ghostModel.traverse((node) => {
-    if (node.isMesh) {
-      node.material = node.material.clone();
-      node.material.transparent = true;
-      node.material.opacity = 0.5;
-    }
+  loader.load(modelInfo.path, (gltf) => {
+      ghostModel = gltf.scene;
+      ghostModel.traverse((node) => {
+          if (node.isMesh) {
+              node.material = node.material.clone();
+              node.material.transparent = true;
+              node.material.opacity = 0.5;
+          }
+      });
+
+      const boundingBox = new THREE.Box3().setFromObject(ghostModel);
+      const modelHeight = boundingBox.max.y - boundingBox.min.y;
+      const scaleFactor = modelInfo.realHeight / modelHeight;
+      ghostModel.scale.set(scaleFactor, scaleFactor, scaleFactor);
+      ghostModel.rotation.y = currentRotationY;
+      
+      // Only show ghost model if in place mode
+      ghostModel.visible = (currentMode === 'place');
+      scene.add(ghostModel);
   });
-
-  const boundingBox = new THREE.Box3().setFromObject(ghostModel);
-  const modelHeight = boundingBox.max.y - boundingBox.min.y;
-  const scaleFactor = modelInfo.realHeight / modelHeight;
-  ghostModel.scale.set(scaleFactor, scaleFactor, scaleFactor);
-  ghostModel.rotation.y = currentRotationY;
-  if (isPlantingMode) scene.add(ghostModel);
-});
 }
 
 function onPlantChange() {
@@ -136,57 +239,126 @@ ghostModel.rotation.y = currentRotationY;
 }
 
 function onMouseMove(event) {
-if (!isPlantingMode || !ghostModel) return;
+  // Only handle ghost model in place mode
+  if (currentMode === 'place' && ghostModel) {
+      const mouse = getRelativeMouse(event);
+      const raycaster = new THREE.Raycaster();
+      raycaster.setFromCamera(mouse, camera);
 
-const mouse = getRelativeMouse(event);
-
-const raycaster = new THREE.Raycaster();
-raycaster.setFromCamera(mouse, camera);
-
-const intersects = raycaster.intersectObjects([baseplate]);
-if (intersects.length > 0) {
-  ghostModel.position.copy(intersects[0].point);
-  ghostModel.position.y += 0.01;
-  ghostModel.visible = true;
-} else {
-  ghostModel.visible = false;
+      const intersects = raycaster.intersectObjects([baseplate]);
+      if (intersects.length > 0) {
+          ghostModel.position.copy(intersects[0].point);
+          ghostModel.position.y += 0.01;
+          ghostModel.visible = true;
+      } else {
+          ghostModel.visible = false;
+      }
+  }
 }
+function onMouseDown(event) {
+  if (currentMode === 'move') {
+      isDragging = true;
+      previousMousePosition = {
+          x: event.clientX,
+          y: event.clientY
+      };
+      renderer.domElement.style.cursor = 'grabbing';
+  }
+}
+function onMouseUp() {
+  isDragging = false;
+  if (currentMode === 'move') {
+      renderer.domElement.style.cursor = 'move';
+  }
 }
 
 function onLeftClick(event) {
-if (!isPlantingMode || !ghostModel) return;
+  const mouse = getRelativeMouse(event);
+  const raycaster = new THREE.Raycaster();
+  raycaster.setFromCamera(mouse, camera);
 
-const mouse = getRelativeMouse(event);
+  switch (currentMode) {
+      case 'place':
+          // Handle placing objects
+          if (!ghostModel) return;
+          const placeIntersects = raycaster.intersectObjects([baseplate]);
+          if (placeIntersects.length > 0) {
+              createPlant(document.getElementById('plantSelect').value, placeIntersects[0].point);
+          }
+          break;
 
-const raycaster = new THREE.Raycaster();
-raycaster.setFromCamera(mouse, camera);
+      case 'delete':
+          // Handle deletion
+          const meshesToTest = [];
+          placedObjects.forEach(object => {
+              object.traverse((child) => {
+                  if (child.isMesh) {
+                      meshesToTest.push(child);
+                  }
+              });
+          });
 
-const intersects = raycaster.intersectObjects([baseplate]);
-if (intersects.length > 0) createPlant(document.getElementById('plantSelect').value, intersects[0].point);
-}
+          const deleteIntersects = raycaster.intersectObjects(meshesToTest, false);
+          if (deleteIntersects.length > 0) {
+              let objectToDelete = deleteIntersects[0].object;
+              
+              // Find the root object (the one in placedObjects array)
+              while (objectToDelete.parent && !placedObjects.includes(objectToDelete)) {
+                  objectToDelete = objectToDelete.parent;
+              }
 
-function onRightClick(event) {
-if (!isPlantingMode) return;
-event.preventDefault();
+              if (placedObjects.includes(objectToDelete)) {
+                  const objectIndex = placedObjects.indexOf(objectToDelete);
+                  scene.remove(objectToDelete);
+                  placedObjects.splice(objectIndex, 1);
+              }
+          }
+          break;
 
-const mouse = getRelativeMouse(event);
-const raycaster = new THREE.Raycaster();
-raycaster.setFromCamera(mouse, camera);
+      case 'move':
+          // This is handled by OrbitControls pan
+          break;
 
-const intersects = raycaster.intersectObjects(scene.children, true);
-if (intersects.length > 0) {
-  let intersectedObject = intersects[0].object;
-  while (intersectedObject.parent && intersectedObject.parent !== scene) {
-    intersectedObject = intersectedObject.parent;
+      case 'rotate3d':
+          // This is handled by OrbitControls rotate
+          break;
   }
+}
 
-  const objectIndex = placedObjects.indexOf(intersectedObject);
-  if (objectIndex !== -1) {
-    scene.remove(intersectedObject);
-    placedObjects.splice(objectIndex, 1);
-  }
-}
-}
+// function onRightClick(event) {
+//   if (currentMode !== 'delete') return;
+//   event.preventDefault();
+
+//   const mouse = getRelativeMouse(event);
+//   const raycaster = new THREE.Raycaster();
+//   raycaster.setFromCamera(mouse, camera);
+
+//   // Get all meshes from placed objects for intersection testing
+//   const meshesToTest = [];
+//   placedObjects.forEach(object => {
+//       object.traverse((child) => {
+//           if (child.isMesh) {
+//               meshesToTest.push(child);
+//           }
+//       });
+//   });
+
+//   const intersects = raycaster.intersectObjects(meshesToTest, false);
+//   if (intersects.length > 0) {
+//       let objectToDelete = intersects[0].object;
+      
+//       // Find the root object (the one in placedObjects array)
+//       while (objectToDelete.parent && !placedObjects.includes(objectToDelete)) {
+//           objectToDelete = objectToDelete.parent;
+//       }
+
+//       if (placedObjects.includes(objectToDelete)) {
+//           const objectIndex = placedObjects.indexOf(objectToDelete);
+//           scene.remove(objectToDelete);
+//           placedObjects.splice(objectIndex, 1);
+//       }
+//   }
+// }
 
 function createPlant(type, position) {
 const modelInfo = modelsData[type];
