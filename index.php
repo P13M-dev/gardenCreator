@@ -68,7 +68,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GardenPlanner | 3D Garden Planner</title>
+    <title>GardenVision | 3D Garden Planner</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         * {
@@ -449,7 +449,7 @@
             <div class="footer-content">
                 <div class="logo">
                     <i class="fas fa-leaf"></i>
-                    GardenVision
+                    <span style="color:white;">GardenVision</span>
                 </div>
                 <div class="social-links">
                     <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
