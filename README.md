@@ -1,5 +1,5 @@
 # Garden Planner
-![Static Badge](https://img.shields.io/badge/version-0.1.0-blue) 
+![Static Badge](https://img.shields.io/badge/version-0.2.0-blue) 
 
 ## What it is
 The aim of this project is to create an eco-first garden planner. The rest of it is still in progress ☺️
