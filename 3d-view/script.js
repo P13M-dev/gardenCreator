@@ -142,7 +142,7 @@ async function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   plannerContainer.appendChild(renderer.domElement);
 
-  const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.85);
   scene.add(ambientLight);
   const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
   directionalLight.position.set(10, 20, 10);
@@ -315,6 +315,44 @@ function onMouseMove(event) {
   }
 }
 
+// async function loadPlantDataFromCSV() {
+//     const response = await fetch('../plants.csv'); // Update path if needed
+//     let csvData = await response.text();
+
+//     // Clean the CSV data of any unintended HTML tags or stray characters
+//     csvData = csvData.replace(/<\/?[^>]+(>|$)/g, ""); // Remove any HTML tags
+    
+//     console.log("Sanitized CSV Data:", csvData); // Log sanitized data
+
+//     const lines = csvData.split('\n').slice(1).map(line => line.trim()).filter(line => line);
+    
+//     for (const line of lines) {
+//         // Destructure CSV row fields
+//         const [name, description, type, oxygenProduction, plantType, waterRequirement, sunlightRequirement, realHeight] = line.split(',');
+
+//         // Confirm the parsed name and path for debugging
+//         const folderName = name.toLowerCase().trim();
+//         const folderPath = `../models/${folderName}`;
+//         const modelPath = `${folderPath}/scene.gltf`;
+
+//         console.log(`Parsed model name: "${name}", path: ${modelPath}`);
+
+//         const exists = await checkModelFileExists(modelPath);
+
+//         if (exists) {
+//             console.log(`Model found and added: ${name}`);
+//             modelsData[name] = {
+//                 path: modelPath,
+//                 displayName: name, // Use name as the display label
+//                 realHeight: parseFloat(realHeight)
+//             };
+//         } else {
+//             console.warn(`Model file missing for: ${name} at ${modelPath}`);
+//         }
+//     }
+
+//     populateDropdown();
+// }
 async function loadPlantDataFromCSV() {
     const response = await fetch('../plants.csv'); // Update path if needed
     let csvData = await response.text();
@@ -327,8 +365,11 @@ async function loadPlantDataFromCSV() {
     const lines = csvData.split('\n').slice(1).map(line => line.trim()).filter(line => line);
     
     for (const line of lines) {
+        // Use regular expression to split the line while ignoring commas inside quotes
+        const columns = line.match(/(".*?"|[^",\n]+)(?=\s*,|\s*$)/g);
+
         // Destructure CSV row fields
-        const [name, description, type, oxygenProduction, plantType, waterRequirement, sunlightRequirement, realHeight] = line.split(',');
+        const [name, description, type, oxygenProduction, plantType, waterRequirement, sunlightRequirement, realHeight] = columns;
 
         // Confirm the parsed name and path for debugging
         const folderName = name.toLowerCase().trim();
@@ -353,6 +394,8 @@ async function loadPlantDataFromCSV() {
 
     populateDropdown();
 }
+
+
 
 // Utility function to check if a model file exists at a given path
 async function checkModelFileExists(path) {
