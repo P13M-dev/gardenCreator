@@ -55,6 +55,14 @@
                 <option value="bench">Ławka (Bench)</option>
             </select>
             <!-- Add more menu items as needed -->
+            <input type="file" id="importFile" accept=".json" style="display: none">
+            <button onclick="document.getElementById('importFile').click()" class="toolbar-btn" title="Import Garden Arrangement">
+                <i class="fas fa-file-import"></i>
+            </button>
+            
+            <button onclick="exportGardenArrangement()" id="exportFile" class="toolbar-btn" title="Export Garden Arrangement">
+              <i class="fas fa-file-export"></i>
+          </button>          
         </div>
     </div>
 

@@ -15,11 +15,11 @@ let currentMode = 'place';
 const modes = ['rotate3d', 'move', 'place', 'delete'];
 
 const modelsData = {
-  oak_tree: { path: '../models/oak_tree/scene.gltf', displayName: 'Oak Tree', realHeight: 15 },
-  tall_bush: { path: '../models/tall_bush/scene.gltf', displayName: 'Tall Bush', realHeight: 2 },
-  thuya: { path: '../models/thuya/scene.gltf', displayName: 'Tuja (Arborvitae)', realHeight: 3.5 },
-  buxus: { path: '../models/buxus/scene.gltf', displayName: 'Bukszpan (Buxus)', realHeight: 1 },
-  bench: { path: '../models/bench/scene.gltf', displayName: 'Ławka (Bench)', realHeight: 0.9 }
+//   oak_tree: { path: '../models/dab/scene.gltf', displayName: 'Oak Tree', realHeight: 15 },
+//   tall_bush: { path: '../models/tall_bush/scene.gltf', displayName: 'Tall Bush', realHeight: 2 },
+  thuya: { path: '../models/tuja/scene.gltf', displayName: 'Tuja', realHeight: 3.5 },
+  buxus: { path: '../models/bukszpan/scene.gltf', displayName: 'Bukszpan', realHeight: 1 },
+  bench: { path: '../models/lawka/scene.gltf', displayName: 'Ławka', realHeight: 0.9 }
 };
 
 let plannerContainer;
@@ -166,8 +166,8 @@ function init() {
   populateDropdown();
   loadGhostModel(document.getElementById('plantSelect').value);
 
-  // document.getElementById('toggleView').addEventListener('click', toggleViewMode);
-  // document.getElementById('backButton').addEventListener('click', backButtonWorkPls);
+  document.getElementById("exportFile").addEventListener('click', exportGardenArrangement);
+  document.getElementById("importFile").addEventListener('change', importGardenArrangement);
   document.getElementById('plantSelect').addEventListener('change', onPlantChange);
 
   window.addEventListener('click', onLeftClick);
@@ -377,23 +377,27 @@ function onLeftClick(event) {
 // }
 
 function createPlant(type, position) {
-const modelInfo = modelsData[type];
-if (!modelInfo) return;
+    const modelInfo = modelsData[type];
+    if (!modelInfo) return;
 
-loader.load(modelInfo.path, (gltf) => {
-  const plant = gltf.scene;
+    loader.load(modelInfo.path, (gltf) => {
+        const plant = gltf.scene;
 
-  const boundingBox = new THREE.Box3().setFromObject(plant);
-  const modelHeight = boundingBox.max.y - boundingBox.min.y;
-  const scaleFactor = modelInfo.realHeight / modelHeight;
-  plant.scale.set(scaleFactor, scaleFactor, scaleFactor);
+        const boundingBox = new THREE.Box3().setFromObject(plant);
+        const modelHeight = boundingBox.max.y - boundingBox.min.y;
+        const scaleFactor = modelInfo.realHeight / modelHeight;
+        plant.scale.set(scaleFactor, scaleFactor, scaleFactor);
 
-  plant.position.copy(position);
-  plant.rotation.y = currentRotationY;
-  scene.add(plant);
-  placedObjects.push(plant);
-});
+        plant.position.copy(position);
+        plant.rotation.y = currentRotationY;
+
+        plant.userData.modelType = type;
+
+        scene.add(plant);
+        placedObjects.push(plant);
+    });
 }
+
 
 function toggleViewMode() {
 isPlantingMode = !isPlantingMode;
@@ -403,6 +407,88 @@ if (ghostModel) ghostModel.visible = isPlantingMode;
 document.getElementById('toggleView').textContent = isPlantingMode ? 'Switch to View Mode' : 'Switch to Planting Mode';
 }
 
+function exportGardenArrangement() {
+    // Gather data for each placed object
+    const arrangementData = placedObjects.map((object) => {
+        const modelType = object.userData.modelType; // Store model type in userData when placing
+        return {
+            modelType,
+            position: {
+                x: object.position.x,
+                y: object.position.y,
+                z: object.position.z,
+            },
+            rotationY: object.rotation.y
+        };
+    });
+
+    // Convert the data to JSON format
+    const jsonData = JSON.stringify(arrangementData, null, 2);
+
+    // Create a downloadable blob from JSON data
+    const blob = new Blob([jsonData], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+
+    // Create a temporary link to trigger the download
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'garden-arrangement.json';
+    link.click();
+
+    // Clean up the URL object
+    URL.revokeObjectURL(url);
+}
+
+function importGardenArrangement(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        try {
+            const arrangementData = JSON.parse(e.target.result);
+            loadGardenArrangement(arrangementData);
+        } catch (error) {
+            console.error("Error parsing JSON:", error);
+            alert("Invalid file format. Please upload a valid garden arrangement JSON.");
+        }
+    };
+    reader.readAsText(file);
+}
+
+function loadGardenArrangement(arrangementData) {
+    // Clear existing objects before loading new arrangement
+    placedObjects.forEach((object) => scene.remove(object));
+    placedObjects.length = 0;
+
+    // Iterate over each object in the JSON data and recreate it in the scene
+    arrangementData.forEach((data) => {
+        const { modelType, position, rotationY } = data;
+        
+        // Load the model and set its position and rotation as per the saved data
+        loader.load(modelsData[modelType].path, (gltf) => {
+            const plant = gltf.scene;
+
+            // Apply scaling based on the original model's real height
+            const modelInfo = modelsData[modelType];
+            const boundingBox = new THREE.Box3().setFromObject(plant);
+            const modelHeight = boundingBox.max.y - boundingBox.min.y;
+            const scaleFactor = modelInfo.realHeight / modelHeight;
+            plant.scale.set(scaleFactor, scaleFactor, scaleFactor);
+
+            // Set position and rotation from the imported data
+            plant.position.set(position.x, position.y, position.z);
+            plant.rotation.y = rotationY;
+
+            // Store model type in userData for export
+            plant.userData.modelType = modelType;
+
+            // Add the plant to the scene and to placedObjects array
+            scene.add(plant);
+            placedObjects.push(plant);
+        });
+    });
+}
 
 function backButtonWorkPls() {
 window.location.replace("../index.html");
