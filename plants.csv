@@ -1,87 +1,87 @@
-Name,Description,Type,Oxygen production kg/year for 1m2 leaves surface,Plant Type,Water requirement liters/day,Sunlight requirement
-Rozmaryn,"Zioło o charakterystycznym zapachu, stosowane w kuchni i ogrodach.",zioło,1.0 kg,Zioło,0.4,Musi być na słońcu
-Koper,"Aromatyczne zioło, często używane do marynat i przyprawiania potraw.",zioło,1.2 kg,Zioło,0.5,Musi być na słońcu
-Szałwia,"Zioło o srebrzystych liściach, stosowane w kuchni i medycynie.",zioło,0.9 kg,Zioło,0.3,Musi być na słońcu
-Mięta,"Zioło o intensywnym, świeżym zapachu, często używane w napojach i kuchni.",zioło,1.4 kg,Zioło,0.5,Może być na słońcu lub w cieniu
-Rumianek,"Zioło o drobnych, białych kwiatach, stosowane do herbatek i kosmetyków.",zioło,1.0 kg,Zioło,0.3,Musi być na słońcu
-Laur,"Zioło o aromatycznych liściach, stosowane jako przyprawa w kuchni.",zioło,1.1 kg,Zioło,0.4,Może być na słońcu lub w cieniu
-Estragon,"Aromatyczne zioło, dodawane do potraw dla nadania wyrazistego smaku.",zioło,0.8 kg,Zioło,0.4,Musi być na słońcu
-Nagietek,"Kwiat o pomarańczowych płatkach, stosowany w kosmetykach i medycynie naturalnej.",zioło,0.7 kg,Dekoracyjna,0.5,Musi być na słońcu
-Agawa,"Sukulent o grubych, mięsistych liściach, popularny w ogrodach i jako roślina doniczkowa.",zioło,1.1 kg,Dekoracyjna,0.3,Musi być na słońcu
-Aloes,"Sukulent o grubych liściach, znany ze swoich właściwości leczniczych.",zioło,1.3 kg,Zioło,0.2,Musi być na słońcu
-Czosnek,"Roślina bulwiasta, o intensywnym zapachu, często uprawiana w ogrodach.",krzew,1.2 kg,Zioło,0.4,Musi być na słońcu
-Dynia,"Pnąca roślina o dużych, pomarańczowych owocach, popularna w kuchni i ozdobnictwie jesiennym.",krzew,1.0 kg,Hodowlana,1.0,Musi być na słońcu
-Kolendra,"Aromatyczne zioło o intensywnym zapachu, często stosowane w kuchni azjatyckiej.",zioło,1.0 kg,Zioło,0.4,Musi być na słońcu
-Krwawnik,"Roślina łąkowa o drobnych, białych kwiatach, stosowana w medycynie naturalnej.",zioło,1.1 kg,Zioło,0.2,Musi być na słońcu
-Melisa,"Zioło o cytrynowym zapachu, stosowane w herbatkach i medycynie naturalnej.",zioło,0.9 kg,Zioło,0.4,Może być na słońcu lub w cieniu
-Mydlnica,"Roślina łąkowa o drobnych, różowych kwiatach, stosowana do produkcji naturalnych mydeł.",zioło,0.7 kg,Zioło,0.3,Musi być na słońcu
-Pokrzywa,"Roślina łąkowa o właściwościach leczniczych, stosowana w herbatkach i kosmetykach.",zioło,1.2 kg,Zioło,0.4,Może być na słońcu lub w cieniu
-Rozchodnik,"Sukulent o mięsistych liściach, popularny w ogrodach skalnych i zielonych dachach.",zioło,1.0 kg,Dekoracyjna,0.3,Musi być na słońcu
-Rukola,"Warzywo o ostrym, pieprznym smaku, popularne w sałatkach.",zioło,0.9 kg,Hodowlana,0.3,Może być na słońcu lub w cieniu
-Szparag,"Warzywo o długich, zielonych pędach, popularne w kuchni.",zioło,1.1 kg,Hodowlana,0.6,Może być na słońcu lub w cieniu
-Trawa cytrynowa,"Aromatyczne zioło o cytrynowym zapachu, stosowane w kuchni azjatyckiej.",zioło,0.9 kg,Zioło,0.4,Musi być na słońcu
-Truskawka,"Roślina owocowa o soczystych, czerwonych owocach, lubiana w deserach i przetworach.",krzew,1.0 kg,Hodowlana,0.5,Może być na słońcu lub w cieniu
-Paproć,"Roślina o pierzastych liściach, często uprawiana w zacienionych miejscach.",krzew,1.3 kg,Dekoracyjna,0.3,Musi być w cieniu
-Krokus,"Wiosenny kwiat cebulkowy, pojawiający się jako jeden z pierwszych po zimie, często fioletowy.",kwiat,0.8 kg,Dekoracyjna,0.2,Może być na słońcu lub w cieniu
-Żonkil,"Cebulowy kwiat o żółtych kwiatach, jeden z symboli wiosny.",kwiat,0.7 kg,Dekoracyjna,0.3,Może być na słońcu lub w cieniu
-Hiacynt,"Pachnący kwiat cebulkowy o intensywnych kolorach, zakwita wiosną.",kwiat,0.9 kg,Dekoracyjna,0.3,Może być na słońcu lub w cieniu
-Tulipan,"Popularny wiosenny kwiat o szerokiej gamie kolorów, znany z cebulek i różnorodnych odmian.",kwiat,1.0 kg,Dekoracyjna,0.4,Może być na słońcu lub w cieniu
-Bratek,"Kwiat o jaskrawych, kontrastujących kolorach, często uprawiany w doniczkach i ogrodach.",kwiat,0.6 kg,Dekoracyjna,0.2,Może być na słońcu lub w cieniu
-Stokrotka,"Delikatny kwiat o białych płatkach i żółtym środku, często występuje w trawnikach.",kwiat,0.5 kg,Dekoracyjna,0.2,Może być na słońcu lub w cieniu
-Konwalia,"Niski kwiat o małych, białych, dzwonkowatych kwiatach i intensywnym zapachu.",kwiat,0.9 kg,Dekoracyjna,0.2,Musi być w cieniu
-Irys,Wysoki kwiat o charakterystycznych płatkach i szerokiej gamie kolorów.,kwiat,1.3 kg,Dekoracyjna,0.5,Musi być na słońcu
-Piwonia,"Duży, pachnący kwiat o bujnych płatkach, dostępny w różnych odcieniach różu i bieli.",kwiat,1.2 kg,Dekoracyjna,0.7,Musi być na słońcu
-Niezapominajka,"Delikatny, niebieski kwiat symbolizujący pamięć i lojalność.",kwiat,0.7 kg,Dekoracyjna,0.3,Musi być na słońcu
-Lilia,"Elegancki kwiat o dużych, dzwonkowatych kwiatach i intensywnym zapachu, dostępny w wielu odmianach.",kwiat,1.4 kg,Dekoracyjna,0.5,Może być na słońcu lub w cieniu
-Surfinia,"Zwisający kwiat o długich, kaskadowych kwiatach, często uprawiany w doniczkach i balkonach.",kwiat,0.8 kg,Dekoracyjna,0.8,Musi być na słońcu
-Pelargonia,"Popularny kwiat ogrodowy, łatwy w uprawie, dostępny w wielu kolorach i odmianach.",kwiat,1.1 kg,Dekoracyjna,0.7,Musi być na słońcu
-Cyklamen,"Kwiat doniczkowy o charakterystycznych, kontrastowych kwiatach.",kwiat,0.9 kg,Dekoracyjna,0.4,Musi być w cieniu
-Geranium,"Roślina doniczkowa o intensywnie pachnących liściach, stosowana w kosmetyce.",kwiat,1.1 kg,Dekoracyjna,0.5,Może być na słońcu lub w cieniu
-Hibiskus,"Roślina o dużych, barwnych kwiatach, popularna w ogrodach tropikalnych.",kwiat,1.3 kg,Dekoracyjna,0.7,Musi być na słońcu
-Kocanka,"Roślina ozdobna o jaskrawożółtych kwiatach, często używana do suchych bukietów.",kwiat,0.9 kg,Zioło,0.3,Musi być na słońcu
-Krokus jesienny,"Jesienna wersja krokusa, o fioletowych kwiatach, popularny w ogrodach.",kwiat,0.8 kg,Dekoracyjna,0.3,Może być na słońcu lub w cieniu
-Orlik,"Roślina łąkowa o charakterystycznych, wiszących kwiatach w różnych kolorach.",kwiat,1.0 kg,Dekoracyjna,0.5,Musi być na słońcu
-Petunia,"Roślina kwiatowa o jaskrawych kolorach, popularna w doniczkach i na balkonach.",kwiat,1.1 kg,Dekoracyjna,0.6,Musi być na słońcu
-Słonecznik,"Roślina jednoroczna o dużych, żółtych kwiatach i jadalnych nasionach.",kwiat,1.2 kg,Hodowlana,0.9,Musi być na słońcu
-Tuja,"Zimozielony krzew o kolumnowym pokroju, często używany na żywopłoty i granice.",krzew,1.0 kg,Dekoracyjna,0.5,Może być na słońcu lub w cieniu
-Bukszpan,"Niskie, gęste krzewy o drobnych, zimozielonych liściach, popularne na żywopłoty.",krzew,1.2 kg,Dekoracyjna,0.5,Może być na słońcu lub w cieniu
-Berberys,"Krzew o kolorowych liściach, często czerwonych lub bordowych, kwitnie wiosną.",krzew,1.3 kg,Dekoracyjna,0.7,Musi być na słońcu
-Ostrokrzew,"Krzew o zimozielonych, błyszczących liściach z ostrymi zakończeniami, owoce to czerwone jagody.",krzew,1.1 kg,Dekoracyjna,0.6,Może być na słońcu lub w cieniu
-Ligustr,"Szybko rosnący krzew, który dobrze nadaje się na żywopłoty, ma drobne, ciemnozielone liście.",krzew,1.5 kg,Dekoracyjna,0.6,Może być na słońcu lub w cieniu
-Forsycja,"Krzew o jasnożółtych kwiatach kwitnących na wiosnę, popularny w ogrodach.",krzew,1.4 kg,Dekoracyjna,0.7,Musi być na słońcu
-Hortensja,"Kwiatowy krzew o dużych kulistych kwiatach w różnych kolorach, kwitnie od wiosny do późnego lata.",krzew,1.8 kg,Dekoracyjna,1.0,Musi być w cieniu
-Fuksja,"Krzew o wyjątkowych kwiatach w intensywnych kolorach, idealny do doniczek i wiszących koszy.",krzew,1.6 kg,Dekoracyjna,0.8,Musi być w cieniu
-Azalia,"Krzew kwitnący wiosną o pięknych, dużych kwiatach w różnych kolorach, preferuje miejsca zacienione.",krzew,1.7 kg,Dekoracyjna,0.7,Musi być w cieniu
-Bawełna,"Roślina o włóknistych owocach, używana do produkcji tekstyliów.",krzew,0.8 kg,Hodowlana,0.6,Musi być na słońcu
-Borówka,"Krzew owocowy, dostarcza bogatych w witaminy jagód.",krzew,1.4 kg,Hodowlana,0.8,Może być na słońcu lub w cieniu
-Jaśmin,"Roślina pnąca o delikatnych, pachnących kwiatach, stosowana w herbatkach i perfumach.",krzew,1.2 kg,Dekoracyjna,0.6,Musi być na słońcu
-Jeżyna,"Krzew owocowy o drobnych, czarnych owocach, lubiany w kuchni i deserach.",krzew,1.4 kg,Hodowlana,0.6,Może być na słońcu lub w cieniu
-Kalina,"Krzew ozdobny o białych kwiatach i czerwonych owocach, atrakcyjny w ogrodach.",krzew,1.3 kg,Dekoracyjna,0.5,Może być na słońcu lub w cieniu
-Malina,"Krzew owocowy, daje soczyste, czerwone owoce.",krzew,1.5 kg,Hodowlana,0.8,Może być na słońcu lub w cieniu
-Nefrolepis,"Paproć o pierzastych liściach, popularna jako roślina doniczkowa.",krzew,1.3 kg,Dekoracyjna,0.4,Musi być w cieniu
-Pęcherznica,"Krzew ozdobny o purpurowych liściach i białych kwiatach, atrakcyjny w ogrodach.",krzew,1.2 kg,Dekoracyjna,0.5,Może być na słońcu lub w cieniu
-Róża,"Krzew ozdobny o pachnących kwiatach w różnych kolorach, popularny w ogrodach i florystyce.",krzew,1.5 kg,Dekoracyjna,0.6,Musi być na słońcu
-Winorośl,"Roślina pnąca, dostarcza jadalnych winogron, stosowanych do produkcji wina.",krzew,1.4 kg,Hodowlana,0.8,Musi być na słońcu
-Bazyliowiec,"Drzewo o aromatycznych liściach, stosowane w kuchni indyjskiej i medycynie.",drzewo,1.5 kg,Zioło,0.3,Musi być na słońcu
-Buk,"Duże, długowieczne drzewo liściaste, rosnące w chłodnym klimacie.",drzewo,4.0 kg,Dekoracyjna,0.7,Może być na słońcu lub w cieniu
-Cyprysik,"Zimozielone drzewo o smukłym pokroju, idealne na żywopłoty.",drzewo,3.2 kg,Dekoracyjna,0.6,Może być na słońcu lub w cieniu
-Dąb,"Długowieczne drzewo liściaste o dużej koronie, produkuje żołędzie.",drzewo,5.0 kg,Dekoracyjna,1.0,Musi być na słońcu
-Eukaliptus,"Drzewo o intensywnym zapachu liści, stosowane w aromaterapii.",drzewo,3.0 kg,Dekoracyjna,0.8,Musi być na słońcu
-Figa,"Drzewo owocowe o dużych, zielonych liściach i słodkich owocach.",drzewo,2.5 kg,Hodowlana,0.8,Musi być na słońcu
-Karob,"Drzewo owocowe o słodkich strąkach, często stosowanych jako zamiennik czekolady.",drzewo,1.6 kg,Hodowlana,0.5,Musi być na słońcu
-Kasztanowiec,"Drzewo o dużych, rozłożystych liściach i charakterystycznych owocach - kasztanach.",drzewo,4.2 kg,Dekoracyjna,1-Feb,Musi być na słońcu
-Lipa,"Drzewo o szerokiej koronie i charakterystycznych, pachnących kwiatach, stosowane w herbatkach.",drzewo,3.5 kg,Dekoracyjna,0.8,Może być na słońcu lub w cieniu
-Magnolia,"Drzewo lub krzew o dużych, pachnących kwiatach, często sadzone w ogrodach ozdobnych.",drzewo,2.7 kg,Dekoracyjna,0.6,Musi być na słońcu
-Mandarynka,"Drzewo owocowe, dostarcza słodkich, pomarańczowych owoców.",drzewo,2.1 kg,Hodowlana,1.0,Musi być na słońcu
-Miłorząb,"Drzewo o wachlarzowatych liściach, znane z długowieczności i właściwości zdrowotnych.",drzewo,3.8 kg,Dekoracyjna,0.5,Musi być na słońcu
-Morwa,"Drzewo owocowe o słodkich owocach, popularne w kuchni i medycynie.",drzewo,2.3 kg,Hodowlana,0.7,Może być na słońcu lub w cieniu
-Oliwka,"Drzewo o wąskich, srebrzystych liściach, produkuje oliwki, popularne w kuchni.",drzewo,2.4 kg,Hodowlana,0.6,Musi być na słońcu
-Palma,"Drzewo ozdobne o tropikalnym wyglądzie, często uprawiane w doniczkach w klimatach umiarkowanych.",drzewo,2.0 kg,Dekoracyjna,0.5,Może być na słońcu lub w cieniu
-Papaja,"Drzewo owocowe o dużych, jadalnych owocach, popularne w kuchni tropikalnej.",drzewo,2.2 kg,Hodowlana,1.0,Musi być na słońcu
-Pigwa,"Drzewo owocowe o aromatycznych, żółtych owocach, używane do dżemów i przetworów.",drzewo,2.5 kg,Hodowlana,0.7,Musi być na słońcu
-Platan,"Duże, rozłożyste drzewo o szerokich liściach, popularne w parkach miejskich.",drzewo,4.5 kg,Dekoracyjna,0.9,Musi być na słońcu
-Pomarańcza,"Drzewo owocowe, dostarcza soczystych, pomarańczowych owoców.",drzewo,2.3 kg,Hodowlana,1.0,Musi być na słońcu
-Sosna,"Drzewo iglaste, popularne w lasach i ogrodach, stosowane w przemyśle drzewnym.",drzewo,3.8 kg,Dekoracyjna,1.0,Musi być na słońcu
-Śliwa,"Drzewo owocowe, dostarcza słodkich owoców o fioletowej skórce.",drzewo,2.6 kg,Hodowlana,0.8,Musi być na słońcu
-Wierzba,"Drzewo o zwisających gałęziach, często sadzone w pobliżu wód.",drzewo,3.0 kg,Dekoracyjna,1.0,Może być na słońcu lub w cieniu
-Żywotnik,"Zimozielone drzewo iglaste, często stosowane na żywopłoty.",drzewo,2.9 kg,Dekoracyjna,0.5,Może być na słońcu lub w cieniu
+Name,Description,Type,Oxygen production kg/year for 1m2 leaves surface,Plant Type,Water requirement liters/day,Sunlight requirement,realHeight
+Rozmaryn,"Zioło o charakterystycznym zapachu, stosowane w kuchni i ogrodach.",zioło,1.0 kg,Zioło,0.4,Musi być na słońcu,2.79
+Koper,"Aromatyczne zioło, często używane do marynat i przyprawiania potraw.",zioło,1.2 kg,Zioło,0.5,Musi być na słońcu,3.6
+Szałwia,"Zioło o srebrzystych liściach, stosowane w kuchni i medycynie.",zioło,0.9 kg,Zioło,0.3,Musi być na słońcu,3.05
+Mięta,"Zioło o intensywnym, świeżym zapachu, często używane w napojach i kuchni.",zioło,1.4 kg,Zioło,0.5,Może być na słońcu lub w cieniu,2.77
+Rumianek,"Zioło o drobnych, białych kwiatach, stosowane do herbatek i kosmetyków.",zioło,1.0 kg,Zioło,0.3,Musi być na słońcu,2.18
+Laur,"Zioło o aromatycznych liściach, stosowane jako przyprawa w kuchni.",zioło,1.1 kg,Zioło,0.4,Może być na słońcu lub w cieniu,3.26
+Estragon,"Aromatyczne zioło, dodawane do potraw dla nadania wyrazistego smaku.",zioło,0.8 kg,Zioło,0.4,Musi być na słońcu,2.24
+Nagietek,"Kwiat o pomarańczowych płatkach, stosowany w kosmetykach i medycynie naturalnej.",zioło,0.7 kg,Dekoracyjna,0.5,Musi być na słońcu,4.47
+Agawa,"Sukulent o grubych, mięsistych liściach, popularny w ogrodach i jako roślina doniczkowa.",zioło,1.1 kg,Dekoracyjna,0.3,Musi być na słońcu,4.82
+Aloes,"Sukulent o grubych liściach, znany ze swoich właściwości leczniczych.",zioło,1.3 kg,Zioło,0.2,Musi być na słońcu,1.98
+Czosnek,"Roślina bulwiasta, o intensywnym zapachu, często uprawiana w ogrodach.",krzew,1.2 kg,Zioło,0.4,Musi być na słońcu,3.98
+Dynia,"Pnąca roślina o dużych, pomarańczowych owocach, popularna w kuchni i ozdobnictwie jesiennym.",krzew,1.0 kg,Hodowlana,1.0,Musi być na słońcu,2.69
+Kolendra,"Aromatyczne zioło o intensywnym zapachu, często stosowane w kuchni azjatyckiej.",zioło,1.0 kg,Zioło,0.4,Musi być na słońcu,2.88
+Krwawnik,"Roślina łąkowa o drobnych, białych kwiatach, stosowana w medycynie naturalnej.",zioło,1.1 kg,Zioło,0.2,Musi być na słońcu,4.64
+Melisa,"Zioło o cytrynowym zapachu, stosowane w herbatkach i medycynie naturalnej.",zioło,0.9 kg,Zioło,0.4,Może być na słońcu lub w cieniu,0.45
+Mydlnica,"Roślina łąkowa o drobnych, różowych kwiatach, stosowana do produkcji naturalnych mydeł.",zioło,0.7 kg,Zioło,0.3,Musi być na słońcu,0.53
+Pokrzywa,"Roślina łąkowa o właściwościach leczniczych, stosowana w herbatkach i kosmetykach.",zioło,1.2 kg,Zioło,0.4,Może być na słońcu lub w cieniu,0.2
+Rozchodnik,"Sukulent o mięsistych liściach, popularny w ogrodach skalnych i zielonych dachach.",zioło,1.0 kg,Dekoracyjna,0.3,Musi być na słońcu,4.18
+Rukola,"Warzywo o ostrym, pieprznym smaku, popularne w sałatkach.",zioło,0.9 kg,Hodowlana,0.3,Może być na słońcu lub w cieniu,3.91
+Szparag,"Warzywo o długich, zielonych pędach, popularne w kuchni.",zioło,1.1 kg,Hodowlana,0.6,Może być na słońcu lub w cieniu,4.36
+Trawa cytrynowa,"Aromatyczne zioło o cytrynowym zapachu, stosowane w kuchni azjatyckiej.",zioło,0.9 kg,Zioło,0.4,Musi być na słońcu,4.9
+Truskawka,"Roślina owocowa o soczystych, czerwonych owocach, lubiana w deserach i przetworach.",krzew,1.0 kg,Hodowlana,0.5,Może być na słońcu lub w cieniu,4.02
+Paproć,"Roślina o pierzastych liściach, często uprawiana w zacienionych miejscach.",krzew,1.3 kg,Dekoracyjna,0.3,Musi być w cieniu,2.36
+Krokus,"Wiosenny kwiat cebulkowy, pojawiający się jako jeden z pierwszych po zimie, często fioletowy.",kwiat,0.8 kg,Dekoracyjna,0.2,Może być na słońcu lub w cieniu,3.92
+Żonkil,"Cebulowy kwiat o żółtych kwiatach, jeden z symboli wiosny.",kwiat,0.7 kg,Dekoracyjna,0.3,Może być na słońcu lub w cieniu,0.68
+Hiacynt,"Pachnący kwiat cebulkowy o intensywnych kolorach, zakwita wiosną.",kwiat,0.9 kg,Dekoracyjna,0.3,Może być na słońcu lub w cieniu,3.24
+Tulipan,"Popularny wiosenny kwiat o szerokiej gamie kolorów, znany z cebulek i różnorodnych odmian.",kwiat,1.0 kg,Dekoracyjna,0.4,Może być na słońcu lub w cieniu,0.8
+Bratek,"Kwiat o jaskrawych, kontrastujących kolorach, często uprawiany w doniczkach i ogrodach.",kwiat,0.6 kg,Dekoracyjna,0.2,Może być na słońcu lub w cieniu,4.73
+Stokrotka,"Delikatny kwiat o białych płatkach i żółtym środku, często występuje w trawnikach.",kwiat,0.5 kg,Dekoracyjna,0.2,Może być na słońcu lub w cieniu,2.66
+Konwalia,"Niski kwiat o małych, białych, dzwonkowatych kwiatach i intensywnym zapachu.",kwiat,0.9 kg,Dekoracyjna,0.2,Musi być w cieniu,2.13
+Irys,Wysoki kwiat o charakterystycznych płatkach i szerokiej gamie kolorów.,kwiat,1.3 kg,Dekoracyjna,0.5,Musi być na słońcu,1.4
+Piwonia,"Duży, pachnący kwiat o bujnych płatkach, dostępny w różnych odcieniach różu i bieli.",kwiat,1.2 kg,Dekoracyjna,0.7,Musi być na słońcu,3.89
+Niezapominajka,"Delikatny, niebieski kwiat symbolizujący pamięć i lojalność.",kwiat,0.7 kg,Dekoracyjna,0.3,Musi być na słońcu,2.34
+Lilia,"Elegancki kwiat o dużych, dzwonkowatych kwiatach i intensywnym zapachu, dostępny w wielu odmianach.",kwiat,1.4 kg,Dekoracyjna,0.5,Może być na słońcu lub w cieniu,2.89
+Surfinia,"Zwisający kwiat o długich, kaskadowych kwiatach, często uprawiany w doniczkach i balkonach.",kwiat,0.8 kg,Dekoracyjna,0.8,Musi być na słońcu,0.19
+Pelargonia,"Popularny kwiat ogrodowy, łatwy w uprawie, dostępny w wielu kolorach i odmianach.",kwiat,1.1 kg,Dekoracyjna,0.7,Musi być na słońcu,3.13
+Cyklamen,"Kwiat doniczkowy o charakterystycznych, kontrastowych kwiatach.",kwiat,0.9 kg,Dekoracyjna,0.4,Musi być w cieniu,3.1
+Geranium,"Roślina doniczkowa o intensywnie pachnących liściach, stosowana w kosmetyce.",kwiat,1.1 kg,Dekoracyjna,0.5,Może być na słońcu lub w cieniu,3.12
+Hibiskus,"Roślina o dużych, barwnych kwiatach, popularna w ogrodach tropikalnych.",kwiat,1.3 kg,Dekoracyjna,0.7,Musi być na słońcu,4.72
+Kocanka,"Roślina ozdobna o jaskrawożółtych kwiatach, często używana do suchych bukietów.",kwiat,0.9 kg,Zioło,0.3,Musi być na słońcu,3.44
+Krokus jesienny,"Jesienna wersja krokusa, o fioletowych kwiatach, popularny w ogrodach.",kwiat,0.8 kg,Dekoracyjna,0.3,Może być na słońcu lub w cieniu,1.86
+Orlik,"Roślina łąkowa o charakterystycznych, wiszących kwiatach w różnych kolorach.",kwiat,1.0 kg,Dekoracyjna,0.5,Musi być na słońcu,2.24
+Petunia,"Roślina kwiatowa o jaskrawych kolorach, popularna w doniczkach i na balkonach.",kwiat,1.1 kg,Dekoracyjna,0.6,Musi być na słońcu,3.52
+Słonecznik,"Roślina jednoroczna o dużych, żółtych kwiatach i jadalnych nasionach.",kwiat,1.2 kg,Hodowlana,0.9,Musi być na słońcu,0.4
+Tuja,"Zimozielony krzew o kolumnowym pokroju, często używany na żywopłoty i granice.",krzew,1.0 kg,Dekoracyjna,0.5,Może być na słońcu lub w cieniu,3.37
+Bukszpan,"Niskie, gęste krzewy o drobnych, zimozielonych liściach, popularne na żywopłoty.",krzew,1.2 kg,Dekoracyjna,0.5,Może być na słońcu lub w cieniu,3.39
+Berberys,"Krzew o kolorowych liściach, często czerwonych lub bordowych, kwitnie wiosną.",krzew,1.3 kg,Dekoracyjna,0.7,Musi być na słońcu,1.13
+Ostrokrzew,"Krzew o zimozielonych, błyszczących liściach z ostrymi zakończeniami, owoce to czerwone jagody.",krzew,1.1 kg,Dekoracyjna,0.6,Może być na słońcu lub w cieniu,0.73
+Ligustr,"Szybko rosnący krzew, który dobrze nadaje się na żywopłoty, ma drobne, ciemnozielone liście.",krzew,1.5 kg,Dekoracyjna,0.6,Może być na słońcu lub w cieniu,1.65
+Forsycja,"Krzew o jasnożółtych kwiatach kwitnących na wiosnę, popularny w ogrodach.",krzew,1.4 kg,Dekoracyjna,0.7,Musi być na słońcu,1.88
+Hortensja,"Kwiatowy krzew o dużych kulistych kwiatach w różnych kolorach, kwitnie od wiosny do późnego lata.",krzew,1.8 kg,Dekoracyjna,1.0,Musi być w cieniu,2.89
+Fuksja,"Krzew o wyjątkowych kwiatach w intensywnych kolorach, idealny do doniczek i wiszących koszy.",krzew,1.6 kg,Dekoracyjna,0.8,Musi być w cieniu,2.25
+Azalia,"Krzew kwitnący wiosną o pięknych, dużych kwiatach w różnych kolorach, preferuje miejsca zacienione.",krzew,1.7 kg,Dekoracyjna,0.7,Musi być w cieniu,4.94
+Bawełna,"Roślina o włóknistych owocach, używana do produkcji tekstyliów.",krzew,0.8 kg,Hodowlana,0.6,Musi być na słońcu,0.6
+Borówka,"Krzew owocowy, dostarcza bogatych w witaminy jagód.",krzew,1.4 kg,Hodowlana,0.8,Może być na słońcu lub w cieniu,1.12
+Jaśmin,"Roślina pnąca o delikatnych, pachnących kwiatach, stosowana w herbatkach i perfumach.",krzew,1.2 kg,Dekoracyjna,0.6,Musi być na słońcu,0.89
+Jeżyna,"Krzew owocowy o drobnych, czarnych owocach, lubiany w kuchni i deserach.",krzew,1.4 kg,Hodowlana,0.6,Może być na słońcu lub w cieniu,3.3
+Kalina,"Krzew ozdobny o białych kwiatach i czerwonych owocach, atrakcyjny w ogrodach.",krzew,1.3 kg,Dekoracyjna,0.5,Może być na słońcu lub w cieniu,1.34
+Malina,"Krzew owocowy, daje soczyste, czerwone owoce.",krzew,1.5 kg,Hodowlana,0.8,Może być na słońcu lub w cieniu,2.38
+Nefrolepis,"Paproć o pierzastych liściach, popularna jako roślina doniczkowa.",krzew,1.3 kg,Dekoracyjna,0.4,Musi być w cieniu,1.3
+Pęcherznica,"Krzew ozdobny o purpurowych liściach i białych kwiatach, atrakcyjny w ogrodach.",krzew,1.2 kg,Dekoracyjna,0.5,Może być na słońcu lub w cieniu,0.88
+Róża,"Krzew ozdobny o pachnących kwiatach w różnych kolorach, popularny w ogrodach i florystyce.",krzew,1.5 kg,Dekoracyjna,0.6,Musi być na słońcu,0.64
+Winorośl,"Roślina pnąca, dostarcza jadalnych winogron, stosowanych do produkcji wina.",krzew,1.4 kg,Hodowlana,0.8,Musi być na słońcu,3.32
+Bazyliowiec,"Drzewo o aromatycznych liściach, stosowane w kuchni indyjskiej i medycynie.",drzewo,1.5 kg,Zioło,0.3,Musi być na słońcu,0.78
+Buk,"Duże, długowieczne drzewo liściaste, rosnące w chłodnym klimacie.",drzewo,4.0 kg,Dekoracyjna,0.7,Może być na słońcu lub w cieniu,1.06
+Cyprysik,"Zimozielone drzewo o smukłym pokroju, idealne na żywopłoty.",drzewo,3.2 kg,Dekoracyjna,0.6,Może być na słońcu lub w cieniu,1.91
+Dąb,"Długowieczne drzewo liściaste o dużej koronie, produkuje żołędzie.",drzewo,5.0 kg,Dekoracyjna,1.0,Musi być na słońcu,4.12
+Eukaliptus,"Drzewo o intensywnym zapachu liści, stosowane w aromaterapii.",drzewo,3.0 kg,Dekoracyjna,0.8,Musi być na słońcu,0.58
+Figa,"Drzewo owocowe o dużych, zielonych liściach i słodkich owocach.",drzewo,2.5 kg,Hodowlana,0.8,Musi być na słońcu,4.21
+Karob,"Drzewo owocowe o słodkich strąkach, często stosowanych jako zamiennik czekolady.",drzewo,1.6 kg,Hodowlana,0.5,Musi być na słońcu,0.57
+Kasztanowiec,"Drzewo o dużych, rozłożystych liściach i charakterystycznych owocach - kasztanach.",drzewo,4.2 kg,Dekoracyjna,1-Feb,Musi być na słońcu,4.88
+Lipa,"Drzewo o szerokiej koronie i charakterystycznych, pachnących kwiatach, stosowane w herbatkach.",drzewo,3.5 kg,Dekoracyjna,0.8,Może być na słońcu lub w cieniu,2.4
+Magnolia,"Drzewo lub krzew o dużych, pachnących kwiatach, często sadzone w ogrodach ozdobnych.",drzewo,2.7 kg,Dekoracyjna,0.6,Musi być na słońcu,4.89
+Mandarynka,"Drzewo owocowe, dostarcza słodkich, pomarańczowych owoców.",drzewo,2.1 kg,Hodowlana,1.0,Musi być na słońcu,3.06
+Miłorząb,"Drzewo o wachlarzowatych liściach, znane z długowieczności i właściwości zdrowotnych.",drzewo,3.8 kg,Dekoracyjna,0.5,Musi być na słońcu,3.72
+Morwa,"Drzewo owocowe o słodkich owocach, popularne w kuchni i medycynie.",drzewo,2.3 kg,Hodowlana,0.7,Może być na słońcu lub w cieniu,0.29
+Oliwka,"Drzewo o wąskich, srebrzystych liściach, produkuje oliwki, popularne w kuchni.",drzewo,2.4 kg,Hodowlana,0.6,Musi być na słońcu,1.49
+Palma,"Drzewo ozdobne o tropikalnym wyglądzie, często uprawiane w doniczkach w klimatach umiarkowanych.",drzewo,2.0 kg,Dekoracyjna,0.5,Może być na słońcu lub w cieniu,0.69
+Papaja,"Drzewo owocowe o dużych, jadalnych owocach, popularne w kuchni tropikalnej.",drzewo,2.2 kg,Hodowlana,1.0,Musi być na słońcu,1.55
+Pigwa,"Drzewo owocowe o aromatycznych, żółtych owocach, używane do dżemów i przetworów.",drzewo,2.5 kg,Hodowlana,0.7,Musi być na słońcu,0.68
+Platan,"Duże, rozłożyste drzewo o szerokich liściach, popularne w parkach miejskich.",drzewo,4.5 kg,Dekoracyjna,0.9,Musi być na słońcu,1.66
+Pomarańcza,"Drzewo owocowe, dostarcza soczystych, pomarańczowych owoców.",drzewo,2.3 kg,Hodowlana,1.0,Musi być na słońcu,2.13
+Sosna,"Drzewo iglaste, popularne w lasach i ogrodach, stosowane w przemyśle drzewnym.",drzewo,3.8 kg,Dekoracyjna,1.0,Musi być na słońcu,0.41
+Śliwa,"Drzewo owocowe, dostarcza słodkich owoców o fioletowej skórce.",drzewo,2.6 kg,Hodowlana,0.8,Musi być na słońcu,3.49
+Wierzba,"Drzewo o zwisających gałęziach, często sadzone w pobliżu wód.",drzewo,3.0 kg,Dekoracyjna,1.0,Może być na słońcu lub w cieniu,2.88
+Żywotnik,"Zimozielone drzewo iglaste, często stosowane na żywopłoty.",drzewo,2.9 kg,Dekoracyjna,0.5,Może być na słońcu lub w cieniu,1.4
