@@ -17,9 +17,9 @@ const modes = ['rotate3d', 'move', 'place', 'delete'];
 const modelsData = {
 //   oak_tree: { path: '../models/dab/scene.gltf', displayName: 'Oak Tree', realHeight: 15 },
 //   tall_bush: { path: '../models/tall_bush/scene.gltf', displayName: 'Tall Bush', realHeight: 2 },
-  thuya: { path: '../models/tuja/scene.gltf', displayName: 'Tuja', realHeight: 3.5 },
-  buxus: { path: '../models/bukszpan/scene.gltf', displayName: 'Bukszpan', realHeight: 1 },
-  bench: { path: '../models/lawka/scene.gltf', displayName: 'Ławka', realHeight: 0.9 }
+//   thuya: { path: '../models/tuja/scene.gltf', displayName: 'Tuja', realHeight: 3.5 },
+//   buxus: { path: '../models/bukszpan/scene.gltf', displayName: 'Bukszpan', realHeight: 1 },
+//   bench: { path: '../models/lawka/scene.gltf', displayName: 'Ławka', realHeight: 0.9 }
 };
 
 let plannerContainer;
@@ -126,7 +126,8 @@ function toggleMenu() {
   menu.classList.toggle('open');
 }
 
-function init() {
+async function init() {
+    await loadPlantDataFromCSV();
   plannerContainer = document.getElementById('planner');
 
   scene = new THREE.Scene();
@@ -163,7 +164,6 @@ function init() {
         RIGHT: THREE.MOUSE.ROTATE    // Make right do the same as left for convenience
     };
 
-  populateDropdown();
   loadGhostModel(document.getElementById('plantSelect').value);
 
   document.getElementById("exportFile").addEventListener('click', exportGardenArrangement);
@@ -181,6 +181,7 @@ function init() {
   renderer.setAnimationLoop(render);
     initToolbar();
     setMode('place'); // Set initial mod
+    console.log(modelsData)
 }
 
 function onWindowResize() {
@@ -191,16 +192,18 @@ controls.update();
 }
 
 function populateDropdown() {
-const selectElement = document.getElementById('plantSelect');
-selectElement.innerHTML = '';
+    const selectElement = document.getElementById('plantSelect');
+    selectElement.innerHTML = '';
 
-for (const modelKey in modelsData) {
-  const option = document.createElement('option');
-  option.value = modelKey;
-  option.textContent = modelsData[modelKey].displayName;
-  selectElement.appendChild(option);
+    // Add each model in modelsData to the dropdown as an option
+    for (const modelKey in modelsData) {
+        const option = document.createElement('option');
+        option.value = modelKey;
+        option.textContent = modelsData[modelKey].displayName; // Use `Name` as the label
+        selectElement.appendChild(option);
+    }
 }
-}
+
 
 function getRelativeMouse(event) {
 const rect = plannerContainer.getBoundingClientRect();
@@ -209,36 +212,76 @@ return new THREE.Vector2(
   -((event.clientY - rect.top) / rect.height) * 2 + 1
 );
 }
-function loadGhostModel(type) {
-  if (ghostModel) {
-      scene.remove(ghostModel);
-      ghostModel = null;
-  }
+// function loadGhostModel(type) {
+//   if (ghostModel) {
+//       scene.remove(ghostModel);
+//       ghostModel = null;
+//   }
 
-  const modelInfo = modelsData[type];
-  if (!modelInfo) return;
+//   const modelInfo = modelsData[type];
+//   if (!modelInfo) return;
 
-  loader.load(modelInfo.path, (gltf) => {
-      ghostModel = gltf.scene;
-      ghostModel.traverse((node) => {
-          if (node.isMesh) {
-              node.material = node.material.clone();
-              node.material.transparent = true;
-              node.material.opacity = 0.5;
-          }
-      });
+//   loader.load(modelInfo.path, (gltf) => {
+//       ghostModel = gltf.scene;
+//       ghostModel.traverse((node) => {
+//           if (node.isMesh) {
+//               node.material = node.material.clone();
+//               node.material.transparent = true;
+//               node.material.opacity = 0.5;
+//           }
+//       });
 
-      const boundingBox = new THREE.Box3().setFromObject(ghostModel);
-      const modelHeight = boundingBox.max.y - boundingBox.min.y;
-      const scaleFactor = modelInfo.realHeight / modelHeight;
-      ghostModel.scale.set(scaleFactor, scaleFactor, scaleFactor);
-      ghostModel.rotation.y = currentRotationY;
+//       const boundingBox = new THREE.Box3().setFromObject(ghostModel);
+//       const modelHeight = boundingBox.max.y - boundingBox.min.y;
+//       const scaleFactor = modelInfo.realHeight / modelHeight;
+//       ghostModel.scale.set(scaleFactor, scaleFactor, scaleFactor);
+//       ghostModel.rotation.y = currentRotationY;
       
-      // Only show ghost model if in place mode
-      ghostModel.visible = (currentMode === 'place');
-      scene.add(ghostModel);
-  });
+//       // Only show ghost model if in place mode
+//       ghostModel.visible = (currentMode === 'place');
+//       scene.add(ghostModel);
+//   });
+// }
+
+function loadGhostModel(type) {
+    if (ghostModel) {
+        scene.remove(ghostModel);
+        ghostModel = null;
+    }
+
+    const modelInfo = modelsData[type];
+    if (!modelInfo) {
+        console.warn(`Model info not found for ghost model of type: ${type}`);
+        return;
+    }
+
+    console.log(`Loading ghost model for type: ${type} from path: ${modelInfo.path}`);
+
+    loader.load(modelInfo.path, (gltf) => {
+        ghostModel = gltf.scene;
+        ghostModel.traverse((node) => {
+            if (node.isMesh) {
+                node.material = node.material.clone();
+                node.material.transparent = true;
+                node.material.opacity = 0.5;
+            }
+        });
+
+        const boundingBox = new THREE.Box3().setFromObject(ghostModel);
+        const modelHeight = boundingBox.max.y - boundingBox.min.y;
+        const scaleFactor = modelInfo.realHeight / modelHeight;
+        ghostModel.scale.set(scaleFactor, scaleFactor, scaleFactor);
+        ghostModel.rotation.y = currentRotationY;
+
+        ghostModel.visible = (currentMode === 'place');
+        scene.add(ghostModel);
+
+        console.log(`Ghost model loaded and displayed for type: ${type}`);
+    }, undefined, (error) => {
+        console.error(`Failed to load ghost model for type: ${type}`, error);
+    });
 }
+
 
 function onPlantChange() {
 loadGhostModel(document.getElementById('plantSelect').value);
@@ -271,22 +314,56 @@ function onMouseMove(event) {
       }
   }
 }
-function onMouseDown(event) {
-  if (currentMode === 'move') {
-      isDragging = true;
-      previousMousePosition = {
-          x: event.clientX,
-          y: event.clientY
-      };
-      renderer.domElement.style.cursor = 'grabbing';
-  }
+
+async function loadPlantDataFromCSV() {
+    const response = await fetch('../plants.csv'); // Update path if needed
+    let csvData = await response.text();
+
+    // Clean the CSV data of any unintended HTML tags or stray characters
+    csvData = csvData.replace(/<\/?[^>]+(>|$)/g, ""); // Remove any HTML tags
+    
+    console.log("Sanitized CSV Data:", csvData); // Log sanitized data
+
+    const lines = csvData.split('\n').slice(1).map(line => line.trim()).filter(line => line);
+    
+    for (const line of lines) {
+        // Destructure CSV row fields
+        const [name, description, type, oxygenProduction, plantType, waterRequirement, sunlightRequirement, realHeight] = line.split(',');
+
+        // Confirm the parsed name and path for debugging
+        const folderName = name.toLowerCase().trim();
+        const folderPath = `../models/${folderName}`;
+        const modelPath = `${folderPath}/scene.gltf`;
+
+        console.log(`Parsed model name: "${name}", path: ${modelPath}`);
+
+        const exists = await checkModelFileExists(modelPath);
+
+        if (exists) {
+            console.log(`Model found and added: ${name}`);
+            modelsData[name] = {
+                path: modelPath,
+                displayName: name, // Use name as the display label
+                realHeight: parseFloat(realHeight)
+            };
+        } else {
+            console.warn(`Model file missing for: ${name} at ${modelPath}`);
+        }
+    }
+
+    populateDropdown();
 }
-function onMouseUp() {
-  isDragging = false;
-  if (currentMode === 'move') {
-      renderer.domElement.style.cursor = 'move';
-  }
+
+// Utility function to check if a model file exists at a given path
+async function checkModelFileExists(path) {
+    try {
+        const response = await fetch(path, { method: 'HEAD' });
+        return response.ok; // True if file exists, false otherwise
+    } catch (error) {
+        return false;
+    }
 }
+
 
 function onLeftClick(event) {
   const mouse = getRelativeMouse(event);
@@ -341,60 +418,63 @@ function onLeftClick(event) {
   }
 }
 
-// function onRightClick(event) {
-//   if (currentMode !== 'delete') return;
-//   event.preventDefault();
+// function createPlant(type, position) {
+//     const modelInfo = modelsData[type];
+//     if (!modelInfo) return;
 
-//   const mouse = getRelativeMouse(event);
-//   const raycaster = new THREE.Raycaster();
-//   raycaster.setFromCamera(mouse, camera);
+//     loader.load(modelInfo.path, (gltf) => {
+//         const plant = gltf.scene;
 
-//   // Get all meshes from placed objects for intersection testing
-//   const meshesToTest = [];
-//   placedObjects.forEach(object => {
-//       object.traverse((child) => {
-//           if (child.isMesh) {
-//               meshesToTest.push(child);
-//           }
-//       });
-//   });
+//         const boundingBox = new THREE.Box3().setFromObject(plant);
+//         const modelHeight = boundingBox.max.y - boundingBox.min.y;
+//         const scaleFactor = modelInfo.realHeight / modelHeight;
+//         plant.scale.set(scaleFactor, scaleFactor, scaleFactor);
 
-//   const intersects = raycaster.intersectObjects(meshesToTest, false);
-//   if (intersects.length > 0) {
-//       let objectToDelete = intersects[0].object;
-      
-//       // Find the root object (the one in placedObjects array)
-//       while (objectToDelete.parent && !placedObjects.includes(objectToDelete)) {
-//           objectToDelete = objectToDelete.parent;
-//       }
+//         plant.position.copy(position);
+//         plant.rotation.y = currentRotationY;
 
-//       if (placedObjects.includes(objectToDelete)) {
-//           const objectIndex = placedObjects.indexOf(objectToDelete);
-//           scene.remove(objectToDelete);
-//           placedObjects.splice(objectIndex, 1);
-//       }
-//   }
+//         plant.userData.modelType = type;
+
+//         scene.add(plant);
+//         placedObjects.push(plant);
+//     });
 // }
 
 function createPlant(type, position) {
     const modelInfo = modelsData[type];
-    if (!modelInfo) return;
+    if (!modelInfo) {
+        console.warn(`Model info not found for type: ${type}`);
+        return;
+    }
+
+    console.log(`Loading model for type: ${type} from path: ${modelInfo.path}`);
 
     loader.load(modelInfo.path, (gltf) => {
         const plant = gltf.scene;
+        
+        // Confirm the model loaded successfully
+        console.log(`Model loaded successfully for type: ${type}`);
 
+        // Scale the plant based on its realHeight
         const boundingBox = new THREE.Box3().setFromObject(plant);
         const modelHeight = boundingBox.max.y - boundingBox.min.y;
         const scaleFactor = modelInfo.realHeight / modelHeight;
         plant.scale.set(scaleFactor, scaleFactor, scaleFactor);
 
+        // Set position and rotation
         plant.position.copy(position);
         plant.rotation.y = currentRotationY;
 
+        // Add model type to userData for export purposes
         plant.userData.modelType = type;
 
+        // Add plant to the scene and placedObjects array
         scene.add(plant);
         placedObjects.push(plant);
+
+        console.log(`Model placed at position: ${position.x}, ${position.y}, ${position.z}`);
+    }, undefined, (error) => {
+        console.error(`Failed to load model for type: ${type}`, error);
     });
 }
 
