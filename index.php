@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Garden Planner</title>
+    <title>Garden Planner - Home</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,7 +16,7 @@
             <h1>Garden Planner</h1>
         </div>
         <div id="splash-desc">
-            <span>A brand-new, eco-first planner.</span>
+            <h3>A brand-new, eco-first planner.</h3>
         </div>
         <div id="actions">
             <!-- <a href="3d-view/gpt-planner.html" class="try-button">Try it out!</a> -->
