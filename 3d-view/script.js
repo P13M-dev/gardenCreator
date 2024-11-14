@@ -353,59 +353,81 @@ async function checkModelFileExists(path) {
     }
 }
 
-
 function onLeftClick(event) {
-  const mouse = getRelativeMouse(event);
-  const raycaster = new THREE.Raycaster();
-  raycaster.setFromCamera(mouse, camera);
-
-  switch (currentMode) {
+    // First check if the click was on the toolbar or side menu
+    const toolbar = document.querySelector('.toolbar');
+    const sideMenu = document.getElementById('side-menu');
+    const dimensionPopup = document.getElementById('dimension-popup');
+    
+    // Check if the click target is within any of the UI elements
+    if (toolbar.contains(event.target) || 
+        sideMenu.contains(event.target) || 
+        dimensionPopup.contains(event.target)) {
+      return; // Exit the function if clicked on UI elements
+    }
+  
+    // Get the planner container bounds
+    const plannerBounds = plannerContainer.getBoundingClientRect();
+    
+    // Check if the click is within the planner area
+    if (event.clientX < plannerBounds.left || 
+        event.clientX > plannerBounds.right || 
+        event.clientY < plannerBounds.top || 
+        event.clientY > plannerBounds.bottom) {
+      return; // Exit if click is outside planner area
+    }
+  
+    const mouse = getRelativeMouse(event);
+    const raycaster = new THREE.Raycaster();
+    raycaster.setFromCamera(mouse, camera);
+  
+    switch (currentMode) {
       case 'place':
-          // Handle placing objects
-          if (!ghostModel) return;
-          const placeIntersects = raycaster.intersectObjects([baseplate]);
-          if (placeIntersects.length > 0) {
-              createPlant(document.getElementById('plantSelect').value, placeIntersects[0].point);
-          }
-          break;
-
+        // Handle placing objects
+        if (!ghostModel) return;
+        const placeIntersects = raycaster.intersectObjects([baseplate]);
+        if (placeIntersects.length > 0) {
+          createPlant(document.getElementById('plantSelect').value, placeIntersects[0].point);
+        }
+        break;
+  
       case 'delete':
-          // Handle deletion
-          const meshesToTest = [];
-          placedObjects.forEach(object => {
-              object.traverse((child) => {
-                  if (child.isMesh) {
-                      meshesToTest.push(child);
-                  }
-              });
+        // Handle deletion
+        const meshesToTest = [];
+        placedObjects.forEach(object => {
+          object.traverse((child) => {
+            if (child.isMesh) {
+              meshesToTest.push(child);
+            }
           });
-
-          const deleteIntersects = raycaster.intersectObjects(meshesToTest, false);
-          if (deleteIntersects.length > 0) {
-              let objectToDelete = deleteIntersects[0].object;
-              
-              // Find the root object (the one in placedObjects array)
-              while (objectToDelete.parent && !placedObjects.includes(objectToDelete)) {
-                  objectToDelete = objectToDelete.parent;
-              }
-
-              if (placedObjects.includes(objectToDelete)) {
-                  const objectIndex = placedObjects.indexOf(objectToDelete);
-                  scene.remove(objectToDelete);
-                  placedObjects.splice(objectIndex, 1);
-              }
+        });
+  
+        const deleteIntersects = raycaster.intersectObjects(meshesToTest, false);
+        if (deleteIntersects.length > 0) {
+          let objectToDelete = deleteIntersects[0].object;
+          
+          // Find the root object (the one in placedObjects array)
+          while (objectToDelete.parent && !placedObjects.includes(objectToDelete)) {
+            objectToDelete = objectToDelete.parent;
           }
-          break;
-
+  
+          if (placedObjects.includes(objectToDelete)) {
+            const objectIndex = placedObjects.indexOf(objectToDelete);
+            scene.remove(objectToDelete);
+            placedObjects.splice(objectIndex, 1);
+          }
+        }
+        break;
+  
       case 'move':
-          // This is handled by OrbitControls pan
-          break;
-
+        // This is handled by OrbitControls pan
+        break;
+  
       case 'rotate3d':
-          // This is handled by OrbitControls rotate
-          break;
+        // This is handled by OrbitControls rotate
+        break;
+    }
   }
-}
 
 function createPlant(type, position) {
     const modelInfo = modelsData[type];
