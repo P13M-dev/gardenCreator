@@ -226,36 +226,6 @@ return new THREE.Vector2(
   -((event.clientY - rect.top) / rect.height) * 2 + 1
 );
 }
-// function loadGhostModel(type) {
-//   if (ghostModel) {
-//       scene.remove(ghostModel);
-//       ghostModel = null;
-//   }
-
-//   const modelInfo = modelsData[type];
-//   if (!modelInfo) return;
-
-//   loader.load(modelInfo.path, (gltf) => {
-//       ghostModel = gltf.scene;
-//       ghostModel.traverse((node) => {
-//           if (node.isMesh) {
-//               node.material = node.material.clone();
-//               node.material.transparent = true;
-//               node.material.opacity = 0.5;
-//           }
-//       });
-
-//       const boundingBox = new THREE.Box3().setFromObject(ghostModel);
-//       const modelHeight = boundingBox.max.y - boundingBox.min.y;
-//       const scaleFactor = modelInfo.realHeight / modelHeight;
-//       ghostModel.scale.set(scaleFactor, scaleFactor, scaleFactor);
-//       ghostModel.rotation.y = currentRotationY;
-      
-//       // Only show ghost model if in place mode
-//       ghostModel.visible = (currentMode === 'place');
-//       scene.add(ghostModel);
-//   });
-// }
 
 function loadGhostModel(type) {
     if (ghostModel) {
@@ -329,44 +299,6 @@ function onMouseMove(event) {
   }
 }
 
-// async function loadPlantDataFromCSV() {
-//     const response = await fetch('../plants.csv'); // Update path if needed
-//     let csvData = await response.text();
-
-//     // Clean the CSV data of any unintended HTML tags or stray characters
-//     csvData = csvData.replace(/<\/?[^>]+(>|$)/g, ""); // Remove any HTML tags
-    
-//     console.log("Sanitized CSV Data:", csvData); // Log sanitized data
-
-//     const lines = csvData.split('\n').slice(1).map(line => line.trim()).filter(line => line);
-    
-//     for (const line of lines) {
-//         // Destructure CSV row fields
-//         const [name, description, type, oxygenProduction, plantType, waterRequirement, sunlightRequirement, realHeight] = line.split(',');
-
-//         // Confirm the parsed name and path for debugging
-//         const folderName = name.toLowerCase().trim();
-//         const folderPath = `../models/${folderName}`;
-//         const modelPath = `${folderPath}/scene.gltf`;
-
-//         console.log(`Parsed model name: "${name}", path: ${modelPath}`);
-
-//         const exists = await checkModelFileExists(modelPath);
-
-//         if (exists) {
-//             console.log(`Model found and added: ${name}`);
-//             modelsData[name] = {
-//                 path: modelPath,
-//                 displayName: name, // Use name as the display label
-//                 realHeight: parseFloat(realHeight)
-//             };
-//         } else {
-//             console.warn(`Model file missing for: ${name} at ${modelPath}`);
-//         }
-//     }
-
-//     populateDropdown();
-// }
 async function loadPlantDataFromCSV() {
     const response = await fetch('../plants.csv'); // Update path if needed
     let csvData = await response.text();
@@ -475,28 +407,6 @@ function onLeftClick(event) {
   }
 }
 
-// function createPlant(type, position) {
-//     const modelInfo = modelsData[type];
-//     if (!modelInfo) return;
-
-//     loader.load(modelInfo.path, (gltf) => {
-//         const plant = gltf.scene;
-
-//         const boundingBox = new THREE.Box3().setFromObject(plant);
-//         const modelHeight = boundingBox.max.y - boundingBox.min.y;
-//         const scaleFactor = modelInfo.realHeight / modelHeight;
-//         plant.scale.set(scaleFactor, scaleFactor, scaleFactor);
-
-//         plant.position.copy(position);
-//         plant.rotation.y = currentRotationY;
-
-//         plant.userData.modelType = type;
-
-//         scene.add(plant);
-//         placedObjects.push(plant);
-//     });
-// }
-
 function createPlant(type, position) {
     const modelInfo = modelsData[type];
     if (!modelInfo) {
@@ -535,14 +445,6 @@ function createPlant(type, position) {
     });
 }
 
-
-function toggleViewMode() {
-isPlantingMode = !isPlantingMode;
-controls.enabled = !isPlantingMode;
-
-if (ghostModel) ghostModel.visible = isPlantingMode;
-document.getElementById('toggleView').textContent = isPlantingMode ? 'Switch to View Mode' : 'Switch to Planting Mode';
-}
 
 function exportGardenArrangement() {
     // Get baseplate dimensions from the geometry
