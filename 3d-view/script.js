@@ -14,13 +14,21 @@ let previousMousePosition = { x: 0, y: 0 };
 let currentMode = 'place';
 const modes = ['rotate3d', 'move', 'place', 'delete'];
 
-const modelsData = {
-//   oak_tree: { path: '../models/dab/scene.gltf', displayName: 'Oak Tree', realHeight: 15 },
-//   tall_bush: { path: '../models/tall_bush/scene.gltf', displayName: 'Tall Bush', realHeight: 2 },
-//   thuya: { path: '../models/tuja/scene.gltf', displayName: 'Tuja', realHeight: 3.5 },
-//   buxus: { path: '../models/bukszpan/scene.gltf', displayName: 'Bukszpan', realHeight: 1 },
-//   bench: { path: '../models/lawka/scene.gltf', displayName: 'Ławka', realHeight: 0.9 }
-};
+const modelsData = {}
+
+function showDimensionPopup() {
+    const popup = document.getElementById('dimension-popup');
+    popup.style.display = 'flex';
+}
+
+function createBaseplate(width, height) {
+    const baseGeometry = new THREE.PlaneGeometry(width, height);
+    const baseMaterial = new THREE.MeshLambertMaterial({ color: 0x382014, side: THREE.DoubleSide });
+    baseplate = new THREE.Mesh(baseGeometry, baseMaterial);
+    baseplate.rotation.x = -Math.PI / 2;
+    scene.add(baseplate);
+}
+
 
 let plannerContainer;
 
@@ -128,60 +136,66 @@ function toggleMenu() {
 
 async function init() {
     await loadPlantDataFromCSV();
-  plannerContainer = document.getElementById('planner');
+    plannerContainer = document.getElementById('planner');
 
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xa0c8ff);
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xa0c8ff);
 
-  camera = new THREE.PerspectiveCamera(45, plannerContainer.clientWidth / plannerContainer.clientHeight, 0.1, 1000);
-  camera.position.set(30, 15, 20);
-  camera.lookAt(0, 0, 0);
+    camera = new THREE.PerspectiveCamera(45, plannerContainer.clientWidth / plannerContainer.clientHeight, 0.1, 1000);
+    camera.position.set(30, 15, 20);
+    camera.lookAt(0, 0, 0);
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setSize(plannerContainer.clientWidth, plannerContainer.clientHeight);
-  renderer.setPixelRatio(window.devicePixelRatio);
-  plannerContainer.appendChild(renderer.domElement);
+    renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(plannerContainer.clientWidth, plannerContainer.clientHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    plannerContainer.appendChild(renderer.domElement);
 
-  const ambientLight = new THREE.AmbientLight(0xffffff, 0.85);
-  scene.add(ambientLight);
-  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-  directionalLight.position.set(10, 20, 10);
-  scene.add(directionalLight);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.85);
+    scene.add(ambientLight);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+    directionalLight.position.set(10, 20, 10);
+    scene.add(directionalLight);
 
-  const baseGeometry = new THREE.PlaneGeometry(20, 20);
-  const baseMaterial = new THREE.MeshLambertMaterial({ color: 0x382014, side: THREE.DoubleSide });
-  baseplate = new THREE.Mesh(baseGeometry, baseMaterial);
-  baseplate.rotation.x = -Math.PI / 2;
-  scene.add(baseplate);
+    // Show dimension popup
+    showDimensionPopup();
 
-  controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.enabled = false;
-    // Change mouse buttons configuration
-    controls.mouseButtons = {
-        LEFT: THREE.MOUSE.ROTATE,    // For rotate mode
-        MIDDLE: THREE.MOUSE.DOLLY,   // Keep middle mouse for zoom if needed
-        RIGHT: THREE.MOUSE.ROTATE    // Make right do the same as left for convenience
-    };
+    // Handle dimension submission
+    document.getElementById('set-dimensions').addEventListener('click', () => {
+        const width = parseFloat(document.getElementById('garden-width').value);
+        const height = parseFloat(document.getElementById('garden-height').value);
+        
+        if (width > 0 && height > 0) {
+            createBaseplate(width, height);
+            document.getElementById('dimension-popup').style.display = 'none';
+            
+            // Continue with rest of initialization
+            controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.enabled = false;
+            controls.mouseButtons = {
+                LEFT: THREE.MOUSE.ROTATE,
+                MIDDLE: THREE.MOUSE.DOLLY,
+                RIGHT: THREE.MOUSE.ROTATE
+            };
 
-  loadGhostModel(document.getElementById('plantSelect').value);
+            loadGhostModel(document.getElementById('plantSelect').value);
 
-  document.getElementById("exportFile").addEventListener('click', exportGardenArrangement);
-  document.getElementById("importFile").addEventListener('change', importGardenArrangement);
-  document.getElementById('plantSelect').addEventListener('change', onPlantChange);
+            document.getElementById("exportFile").addEventListener('click', exportGardenArrangement);
+            document.getElementById("importFile").addEventListener('change', importGardenArrangement);
+            document.getElementById('plantSelect').addEventListener('change', onPlantChange);
 
-  window.addEventListener('click', onLeftClick);
-  window.addEventListener('mousemove', onMouseMove);
-  window.addEventListener('resize', onWindowResize);
-  window.addEventListener('keydown', onRotateKeyPress);
+            window.addEventListener('click', onLeftClick);
+            window.addEventListener('mousemove', onMouseMove);
+            window.addEventListener('resize', onWindowResize);
+            window.addEventListener('keydown', onRotateKeyPress);
+            window.addEventListener('contextmenu', (e) => e.preventDefault());
 
-  // Prevent context menu from appearing
-  window.addEventListener('contextmenu', (e) => e.preventDefault());
-
-  renderer.setAnimationLoop(render);
-    initToolbar();
-    setMode('place'); // Set initial mod
-    console.log(modelsData)
+            initToolbar();
+            setMode('place');
+            
+            renderer.setAnimationLoop(render);
+        }
+    });
 }
 
 function onWindowResize() {
@@ -531,19 +545,31 @@ document.getElementById('toggleView').textContent = isPlantingMode ? 'Switch to 
 }
 
 function exportGardenArrangement() {
+    // Get baseplate dimensions from the geometry
+    const baseplateWidth = baseplate.geometry.parameters.width;
+    const baseplateHeight = baseplate.geometry.parameters.height;
+
     // Gather data for each placed object
-    const arrangementData = placedObjects.map((object) => {
-        const modelType = object.userData.modelType; // Store model type in userData when placing
-        return {
-            modelType,
-            position: {
-                x: object.position.x,
-                y: object.position.y,
-                z: object.position.z,
-            },
-            rotationY: object.rotation.y
-        };
-    });
+    const arrangementData = {
+        // Add baseplate dimensions
+        baseplate: {
+            width: baseplateWidth,
+            height: baseplateHeight
+        },
+        // Store objects array
+        objects: placedObjects.map((object) => {
+            const modelType = object.userData.modelType;
+            return {
+                modelType,
+                position: {
+                    x: object.position.x,
+                    y: object.position.y,
+                    z: object.position.z,
+                },
+                rotationY: object.rotation.y
+            };
+        })
+    };
 
     // Convert the data to JSON format
     const jsonData = JSON.stringify(arrangementData, null, 2);
@@ -584,8 +610,18 @@ function loadGardenArrangement(arrangementData) {
     placedObjects.forEach((object) => scene.remove(object));
     placedObjects.length = 0;
 
+    // Remove existing baseplate
+    if (baseplate) {
+        scene.remove(baseplate);
+    }
+
+    // Recreate baseplate with imported dimensions
+    if (arrangementData.baseplate) {
+        createBaseplate(arrangementData.baseplate.width, arrangementData.baseplate.height);
+    }
+
     // Iterate over each object in the JSON data and recreate it in the scene
-    arrangementData.forEach((data) => {
+    arrangementData.objects.forEach((data) => {
         const { modelType, position, rotationY } = data;
         
         // Load the model and set its position and rotation as per the saved data
@@ -612,7 +648,6 @@ function loadGardenArrangement(arrangementData) {
         });
     });
 }
-
 function backButtonWorkPls() {
 window.location.replace("../index.html");
 }
