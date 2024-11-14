@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GardenVision | 3D Garden Planner</title>
+    <title>Garden Vision</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         * {
@@ -301,6 +301,38 @@
                 font-size: 2rem;
             }
         }
+        .user-buttons {
+            position: absolute;
+            top:2.5rem;
+            left: 105em;
+            transform:translateX(-50%) translateY(-50%);
+        }
+        .login-button,.registry-button {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            text-align: center;
+            font-size:1.5rem;
+            background-color: var(--primary);
+            color: #fff;
+            border: none;
+            width: 10rem;
+            height: 4rem;
+            border-radius: 5rem;
+            padding:none;
+            display: table;
+
+        }
+        .login-button span,.registry-button span {
+            
+            display: table-cell;
+            vertical-align: middle;
+            line-height: normal;
+        }
+        .user-table {
+            border-spacing: 1.5rem 0rem;
+        }
+        a{
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
@@ -309,8 +341,25 @@
             <i class="fas fa-leaf"></i>
             GardenVision
         </div>
+        <div class="user-buttons">
+            <?php
+            if(isset($_SESSION['user_id'])){
+                echo "  <div class=\"user-info\"></div>
+                        <div class=\"logout-button\">Wyloguj</div>
+                    ";
+            } else {
+            echo "
+                <table class=\"user-table\">
+                    <tr>
+                        <td><a href=\"./login.php\"><div class=\"login-button\"><span>Logowanie</span></div></a></td>
+                        <td><a href=\"./registry.php\"><div class=\"registry-button\"><span>Rejestracja</span></div></a></td>
+                    </tr>
+                </table>";
+            }
+
+            ?>    
+        </div>
     </nav>
-    
     <main>
         <section class="hero">
             <div class="content">
@@ -391,7 +440,7 @@
                     <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
                     <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
                     <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
-                </div>
+                </div> 
             </div>
         </footer>
 
