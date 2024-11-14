@@ -13,6 +13,24 @@
     </div>
     <div id="planner"></div>
 
+    <div id="dimension-popup" class="popup">
+      <div class="popup-content">
+          <h2>Set Garden Dimensions</h2>
+          <p>Please specify the width and height of your garden area in meters.</p>
+          <div class="input-group">
+              <label for="garden-width">Width:</label>
+              <input type="number" id="garden-width" min="1" step="0.5" value="20">
+          </div>
+          <div class="input-group">
+              <label for="garden-height">Height:</label>
+              <input type="number" id="garden-height" min="1" step="0.5" value="20">
+          </div>
+          <div class="button-group">
+              <button id="set-dimensions" class="primary-button">Set Dimensions</button>
+          </div>
+      </div>
+    </div>
+
     <div class="toolbar">
         <button id="rotate3d-mode" class="toolbar-btn" title="3D Rotation Mode">
           <i class="fas fa-cube"></i>
