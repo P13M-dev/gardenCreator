@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -343,18 +347,19 @@
         </div>
         <div class="user-buttons">
             <?php
-            if(isset($_SESSION['user_id'])){
-                echo "  <div class=\"user-info\"></div>
-                        <div class=\"logout-button\">Wyloguj</div>
-                    ";
-            } else {
-            echo "
+            if(empty($_SESSION['user_id'])){
+                echo "
                 <table class=\"user-table\">
                     <tr>
                         <td><a href=\"./login.php\"><div class=\"login-button\"><span>Logowanie</span></div></a></td>
                         <td><a href=\"./register.php\"><div class=\"register-button\"><span>Rejestracja</span></div></a></td>
                     </tr>
                 </table>";
+
+            } else {
+                echo "  <div class=\"user-info\"></div>
+                        <div class=\"logout-button\"><form action=\"actions.php\" method=\"post\"><input type=\"hidden\" name=\"type\" value=\"logout\"><input type=\"submit\" value=\"Wyloguj\"></form></div>
+                    ";
             }
 
             ?>    

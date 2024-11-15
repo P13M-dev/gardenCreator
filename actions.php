@@ -1,18 +1,18 @@
 <?php
  if(isset($_POST['type'])){
     $type = $_POST['type'];
+    session_start();
 
-    if($type == 'login' && !isset($_SESSION['user_id'])){
+    if($type == 'login' && empty($_SESSION['user_id'])){
         $login = $_POST['login'];
         $password = $_POST['password'];
         $connection = mysqli_connect("localhost", "muchAdmin", "ImDefinetelyNot16YO.","userbase"); 
         $passwordfound = ($connection->query("SELECT haslo FROM users WHERE login='$login'")->fetch_assoc())['haslo'];
-        if($passwordfound == $password && !isset($_SESSION['user_id'])){
-            session_start();
+
+        if($passwordfound == $password ){
             $_SESSION['user_id'] = $login;
             mysqli_close($connection);
-            header("Location: ./index.php?yee=1");
-            
+            header("Location: ./index.php");
             exit();
         } else {
             mysqli_close($connection);
@@ -20,7 +20,7 @@
             exit();
         }
     
-    } else if($type == 'register' && !isset($_SESSION['user_id'])){
+    } else if($type == 'register' && empty($_SESSION['user_id'])){
         $displayName = $_POST['displayName'];
         $login = $_POST['login'];
         $email = $_POST['email'];
@@ -33,23 +33,23 @@
             $date = date('Y/m/d');
             $sql = "INSERT INTO users(login,nazwa,haslo,email,dataStworzenia) VALUES ('$login','$displayName','$password','$email','$date')";
             $connection->query($sql);
-            session_start();
             $_SESSION['user_id'] = $login;
             mysqli_close($connection);
             header("Location: ./index.php");
             exit();
         }
     
-    } else if($type == 'logout' && isset($_SESSION['user_id'])){
+    } else if($type == 'logout'){
         session_unset();
         session_destroy();
         $_SESSION = array();
-        mysqli_close($connection);
         header("Location: ./index.php");
         exit();
     } else if($type == 'saveGarden' && isset($_SESSION['user_id'])){
         
     } 
     
- } 
+ } else {
+    echo "wtf";
+ }
 ?>
