@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GardenVision - Stats</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/groq-sdk@0.8.0/index.min.js"></script> -->
+</head>
+<body>
+    <div class="card">
+        <div class="card-header">
+            <h1 class="card-title">Statystyki utworzonego ogrodu</h1>
+        </div>
+        <div>
+            <h3 class="chart-title">Typy roślin</h3>
+            <div class="bar-chart" id="barChart"></div>
+        </div>
+        <div>
+            <h3 class="chart-title">Produkcja tlenu [kg/rok na m<sup>2</sup> liści]</h3>
+            <div class="chart" id="oxygenChart"></div>
+        </div>
+        <div>
+            <h3 class="chart-title">Zapotrzebowanie na wodę [litry/dzień]</h3>
+            <div class="chart" id="waterChart"></div>
+        </div>
+        <div>
+            <h3 class="chart-title">Podsumowanie AI</h3>
+            <div class="chart" id="aiBox"></div>
+        </div>
+    </div>
+    <script src="scripts.js" type="module"></script>
+</body>
+</html>

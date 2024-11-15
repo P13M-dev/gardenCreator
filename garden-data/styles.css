@@ -1,0 +1,117 @@
+/* Reset and Base Styles */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat';
+}
+
+body, html {
+    height: 100%;
+
+    background-color: #f0f4f8;
+}
+
+/* Card container styling */
+.card {
+    background-color: white;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    border-radius: 0.75rem;
+    padding: 2rem;
+    width: 80%; /* Maintain a wide width */
+    max-width: 1800px;
+    margin: 2rem auto 0; /* Top margin added for spacing */
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two-column layout */
+    gap: 2rem;
+    align-items: start;
+}
+
+/* Center align the header */
+.card-header {
+    grid-column: 1 / -1;
+    text-align: center;
+}
+
+.card-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+/* Chart container styling */
+.bar-chart, .chart {
+    width: 100%; /* Fills more space in each grid cell */
+    height: 400px; /* Increased height for better visibility */
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    margin: 0 auto; /* Center-align within each grid cell */
+}
+
+.chart-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #444;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.summary {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.5;
+    grid-column: 1 / -1; /* Span summary across both columns */
+}
+
+#aiBox{
+    font-family: Montserrat;
+    font-weight: 500;
+    overflow-y: auto;
+}
+
+/* Responsive design */
+@media screen and (max-width: 768px) {
+    /* Card container - single column layout on small screens */
+    .card {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+    }
+
+    .card-title {
+        font-size: 1.5rem;
+    }
+
+    /* Reduce chart height for smaller screens */
+    .bar-chart, .chart {
+        height: 300px;
+    }
+
+    /* Smaller chart titles */
+    .chart-title {
+        font-size: 1.1rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    /* Reduce font size further for very small screens */
+    .card-title {
+        font-size: 1.2rem;
+    }
+
+    /* Further reduce chart height */
+    .bar-chart, .chart {
+        height: 250px;
+    }
+
+    .chart-title {
+        font-size: 1rem;
+    }
+
+    #aiBox {
+        font-size: 0.9rem;
+    }
+}

@@ -189,6 +189,10 @@ async function init() {
             window.addEventListener('resize', onWindowResize);
             window.addEventListener('keydown', onRotateKeyPress);
             window.addEventListener('contextmenu', (e) => e.preventDefault());
+            document.getElementById('next-btn').addEventListener('click',()=>{
+                exportGardenData();
+                window.location.href = "../garden-data/index.html";
+            });
 
             initToolbar();
             setMode('place');
@@ -582,3 +586,26 @@ renderer.render(scene, camera);
 }
 
 init();
+
+function exportGardenData() {
+    const exportedGardenData = {
+      baseplate: {
+        width: baseplate.geometry.parameters.width,
+        height: baseplate.geometry.parameters.height
+      },
+      objects: placedObjects.map((object) => ({
+        modelType: object.userData.modelType,
+        position: {
+          x: object.position.x,
+          y: object.position.y,
+          z: object.position.z
+        },
+        rotationY: object.rotation.y
+      }))
+    };
+  
+    // Save the exported data to a separate JavaScript file
+    localStorage.setItem('exportedGardenData', JSON.stringify(exportedGardenData));
+  }
+
+// export let exportedArrangment = placedObjects;
