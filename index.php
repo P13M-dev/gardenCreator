@@ -307,7 +307,7 @@
             left: 105em;
             transform:translateX(-50%) translateY(-50%);
         }
-        .login-button,.registry-button {
+        .login-button,.register-button {
             font-family: 'Segoe UI', system-ui, sans-serif;
             text-align: center;
             font-size:1.5rem;
@@ -316,12 +316,12 @@
             border: none;
             width: 10rem;
             height: 4rem;
-            border-radius: 5rem;
+            border-radius: 0.5rem;
             padding:none;
             display: table;
 
         }
-        .login-button span,.registry-button span {
+        .login-button span,.register-button span {
             
             display: table-cell;
             vertical-align: middle;
@@ -339,7 +339,7 @@
     <nav class="nav">
         <div class="logo">
             <i class="fas fa-leaf"></i>
-            GardenVision
+            Garden Vision
         </div>
         <div class="user-buttons">
             <?php
@@ -352,7 +352,7 @@
                 <table class=\"user-table\">
                     <tr>
                         <td><a href=\"./login.php\"><div class=\"login-button\"><span>Logowanie</span></div></a></td>
-                        <td><a href=\"./registry.php\"><div class=\"registry-button\"><span>Rejestracja</span></div></a></td>
+                        <td><a href=\"./register.php\"><div class=\"register-button\"><span>Rejestracja</span></div></a></td>
                     </tr>
                 </table>";
             }
@@ -433,7 +433,7 @@
             <div class="footer-content">
                 <div class="logo">
                     <i class="fas fa-leaf"></i>
-                    <span style="color:white;">GardenVision</span>
+                    <span style="color:white;">Garden Vision</span>
                 </div>
                 <div class="social-links">
                     <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
