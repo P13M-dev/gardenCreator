@@ -125,8 +125,20 @@ if (exportedGardenData && Array.isArray(exportedGardenData.objects)) {
     document.getElementById("aiBox").innerText = response;
   }
 
+  function loadFile(filePath) {
+    var result = null;
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("GET", filePath, false);
+    xmlhttp.send();
+    if (xmlhttp.status==200) {
+      result = xmlhttp.responseText;
+    }
+    return result;
+  }
+
   async function getGroqResponse(payload) {
-    const apiKey = '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'; // Replace with your actual API key
+
+    const apiKey =  loadFile("api_key.txt"); 
     const url = "https://api.groq.com/openai/v1/chat/completions";
   
     const response = await fetch(url, {
