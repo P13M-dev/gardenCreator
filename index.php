@@ -318,7 +318,7 @@ session_start();
             background-color: var(--primary);
             color: #fff;
             border: none;
-            width: 10rem;
+            width: 6rem;
             height: 4rem;
             border-radius: 0.5rem;
             padding:none;
@@ -337,7 +337,162 @@ session_start();
         a{
             text-decoration: none;
         }
+        .user-info {
+    display: inline-block;
+    margin-right: 1.5rem;
+    font-size: 1.5rem;
+    color: var(--text-dark);
+}
+
+.user-buttons {
+        position: static;
+        transform: none;
+        
+        justify-content: center;
+    }
+
+.logout-button form {
+    margin: 0;
+    padding: 0;
+}
+
+.logout-button input[type="submit"] {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    text-align: center;
+    font-size: 1.5rem;
+    background-color: var(--primary);
+    color: #fff;
+    border: none;
+    width: 6rem;
+    height: 4rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.logout-button input[type="submit"]:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
+}
+
+/* Add ripple effect on hover */
+.logout-button input[type="submit"]::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease-out, height 0.3s ease-out;
+}
+
+.logout-button input[type="submit"]:hover::after {
+    width: 200%;
+    height: 200%;
+}
+
+/* Update existing login/register buttons for consistency */
+.login-button, .register-button {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.login-button:hover, .register-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
+    background-color: var(--primary-dark);
+}
+
+.login-button::after, .register-button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease-out, height 0.3s ease-out;
+}
+
+.login-button:hover::after, .register-button:hover::after {
+    width: 200%;
+    height: 200%;
+}
+
+/* Responsive styles */
+@media (max-width: 1200px) {
+    .user-buttons {
+        right: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .user-buttons {
+        position: static;
+        transform: none;
+        padding: 0.5rem;
+        justify-content: center;
+    }
+
+    .user-table {
+        border-spacing: 0.75rem 0;
+    }
+
+    .login-button, .register-button, .logout-button input[type="submit"] {
+        width: 8rem;
+        height: 3.5rem;
+        font-size: 1.2rem;
+    }
+
+    .user-info {
+        font-size: 1.2rem;
+        margin-right: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .user-buttons {
+        flex-direction: column;
+        gap: 0.75rem;
+        align-items: stretch;
+    }
+
+    .user-table {
+        width: 100%;
+    }
+
+    .login-button, .register-button, .logout-button input[type="submit"] {
+        width: 100%;
+        height: 3rem;
+        font-size: 1.1rem;
+    }
+
+    .user-info {
+        text-align: center;
+        margin-right: 0;
+        margin-bottom: 0.5rem;
+    }
+
+    .logout-button {
+        width: 100%;
+    }
+    }
+
+    .login-button:active, .register-button:active, .logout-button input[type="submit"]:active {
+        transform: translateY(1px);
+        box-shadow: 0 2px 6px rgba(46, 204, 113, 0.2);
+    }
     </style>
+    <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/512/6959/6959474.png" type="image/x-icon">
 </head>
 <body>
     <nav class="nav">
@@ -368,67 +523,67 @@ session_start();
     <main>
         <section class="hero">
             <div class="content">
-                <h1>Design Your Dream Garden in 3D</h1>
-                <p>Transform your outdoor space with our intuitive 3D garden planner. Visualize, arrange, and perfect your garden design before bringing it to life.</p>
-                <a href="3d-view/gpt-planner.html" class="cta-button">Start Planning <i class="fas fa-arrow-right"></i></a>
+                <h1>Zaprojektuj swój ogród w 3D</h1>
+                <p>Przekształć twoją przestrzeń zewnętrzną używając naszego intuicyjnego planera 3D. Zwizualizuj, zaaranżuj i udoskonal swój projekt zanim zostanie on stworzony.</p>
+                <a href="3d-view/gpt-planner.html" class="cta-button">Rozpocznij planowanie <i class="fas fa-arrow-right"></i></a>
             </div>
         </section>
 
         <section class="features">
-            <h2 class="section-title">Powerful Features</h2>
+            <h2 class="section-title">Potężne funkcje</h2>
             <div class="features-grid">
                 <div class="feature-card">
                     <i class="fas fa-cube feature-icon"></i>
-                    <h3 class="feature-title">3D Visualization</h3>
-                    <p class="feature-description">See your garden come to life with 3D rendering and real-time preview of your designs.</p>
+                    <h3 class="feature-title">Wizualizacja 3d</h3>
+                    <p class="feature-description">Ujrzyj swój nowy ogród po raz pierwszy przy użyciu renderowania 3D oraz podglądu w czasie rzeczywistym.</p>
                 </div>
                 <div class="feature-card">
                     <i class="fas fa-seedling feature-icon"></i>
-                    <h3 class="feature-title">Plant Library</h3>
-                    <p class="feature-description">Access a variety of plants with detailed information about growth requirements and maintenance.</p>
+                    <h3 class="feature-title">Biblioteka kwiatów</h3>
+                    <p class="feature-description">Uzyskaj dostęp do różnych roślin, wraz ze wskazówkami ich dotyczącymi. </p>
                 </div>
                 <div class="feature-card">
-                    <i class="fas fa-cloud-sun feature-icon"></i>
-                    <h3 class="feature-title">AI Analysis</h3>
-                    <p class="feature-description">Get a personalised analysis of your creation by a state of the art AI.</p>
+                    <i class="fa-solid fa-brain feature-icon"></i>
+                    <h3 class="feature-title">Analiza AI</h3>
+                    <p class="feature-description">Otrzymaj spersonalizowaną analizę twojego ogrodu przez sztuczną inteligencję</p>
                 </div>
             </div>
         </section>
 
         <section class="news">
-            <h2 class="section-title">Latest Updates</h2>
+            <h2 class="section-title">Ostatnie informacje</h2>
             <div class="news-grid">
                 <div class="news-card">
                     <div class="news-image">
-                        <img src="/api/placeholder/400/320" alt="New Features Release">
+                        <img src="https://picsum.photos/id/400/320" alt="New Features Release">
                     </div>
                     <div class="news-content">
-                        <div class="news-date">November 14, 2024</div>
-                        <h3 class="news-title">New Features Release</h3>
-                        <p class="news-excerpt">Explore our latest update with enhanced 3D rendering and new plant varieties.</p>
-                        <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                        <div class="news-date">14 Listopada 2024</div>
+                        <h3 class="news-title">New Release</h3>
+                        <p class="news-excerpt">Skorzystaj z najnowszego wydania - v.0.9 - ze wzmocnionym silnikiem 3d oraz nowymi roślinami.</p>
+                        <!-- <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a> -->
                     </div>
                 </div>
                 <div class="news-card">
                     <div class="news-image">
-                        <img src="/api/placeholder/400/320" alt="Community Showcase">
+                        <img src="https://picsum.photos/id/400/320" alt="Community Showcase">
                     </div>
                     <div class="news-content">
-                        <div class="news-date">November 12, 2024</div>
-                        <h3 class="news-title">Community Showcase</h3>
-                        <p class="news-excerpt">Check out amazing garden designs created by our community members.</p>
-                        <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                        <div class="news-date">12 Listopada 2024</div>
+                        <h3 class="news-title">Nowe modele!</h3>
+                        <p class="news-excerpt">Wypróbuj nasze świetne modele 3D stworzone przez wspaniałych członków zespołu twórców.</p>
+                        <!-- <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a> -->
                     </div>
                 </div>
                 <div class="news-card">
                     <div class="news-image">
-                        <img src="/api/placeholder/400/320" alt="Seasonal Tips">
+                        <img src="https://picsum.photos/id/400/320" alt="Seasonal Tips">
                     </div>
                     <div class="news-content">
-                        <div class="news-date">November 10, 2024</div>
-                        <h3 class="news-title">Winter Planning Guide</h3>
-                        <p class="news-excerpt">Get ready for spring with our comprehensive winter planning guide.</p>
-                        <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                        <div class="news-date">10 Listopada 2024</div>
+                        <h3 class="news-title">Ogłoszenie</h3>
+                        <p class="news-excerpt">Przygotuj się na naszą premierę!</p>
+                        <!-- <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a> -->
                     </div>
                 </div>
             </div>

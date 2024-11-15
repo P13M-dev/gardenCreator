@@ -6,6 +6,7 @@
     <title>Garden Planner</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
+    <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/512/6959/6959474.png" type="image/x-icon">
 </head>
 <body>
     <div id="onlyDesktop">
@@ -15,18 +16,18 @@
 
     <div id="dimension-popup" class="popup">
       <div class="popup-content">
-          <h2>Set Garden Dimensions</h2>
-          <p>Please specify the width and height of your garden area in meters.</p>
+          <h2>Ustaw wymiary ogrodu</h2>
+          <p>Proszę o ustawienie szerokości i wysokości ogrodu w metrach.</p>
           <div class="input-group">
-              <label for="garden-width">Width:</label>
+              <label for="garden-width">Szerokość:</label>
               <input type="number" id="garden-width" min="1" step="0.5" value="20">
           </div>
           <div class="input-group">
-              <label for="garden-height">Height:</label>
+              <label for="garden-height">Wysokość:</label>
               <input type="number" id="garden-height" min="1" step="0.5" value="20">
           </div>
           <div class="button-group">
-              <button id="set-dimensions" class="primary-button">Set Dimensions</button>
+              <button id="set-dimensions" class="primary-button">Ustaw wymiary</button>
           </div>
       </div>
     </div>
@@ -59,7 +60,7 @@
 
     <div id="side-menu" class="side-menu">
         <div class="menu-header">
-            <h2>Garden Planner Menu</h2>
+            <h2>Garden Vision - Menu</h2>
             <button id="close-menu" class="close-btn">
                 <i class="fas fa-times"></i>
             </button>
@@ -67,17 +68,17 @@
         <div class="menu-content">
             <select id="plantSelect"></select>
             <input type="file" id="importFile" accept=".json" style="display: none">
-            <button onclick="document.getElementById('importFile').click()" class="toolbar-btn" title="Import Garden Arrangement">
+            <button onclick="document.getElementById('importFile').click()" class="toolbar-btn" style="display:block" title="Import Garden Arrangement">
                 <i class="fas fa-file-import"></i>
             </button>
             
-            <button onclick="exportGardenArrangement()" id="exportFile" class="toolbar-btn" title="Export Garden Arrangement">
+            <button onclick="exportGardenArrangement()" id="exportFile" class="toolbar-btn" style="display:block" title="Export Garden Arrangement">
               <i class="fas fa-file-export"></i>
           </button>          
         </div>
-        <div id="next-btn">
+        <button id="next-btn" class="toolbar-btn" class="toolbar-btn" style="display:block" title="Finished">
           <i class="fa-solid fa-check"></i>
-        </div>
+        </button>
     </div>
 
     <script type="module" src="script.js"></script>

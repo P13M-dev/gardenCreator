@@ -108,9 +108,44 @@ body {
   color: #666;
 }
 
+/* Menu przyciski w poziomie */
 .menu-content {
   padding: 20px;
+  display: flex;
+  justify-content: space-between; /* Rozkłada przyciski w poziomie */
+  gap: 10px; /* Odstęp między przyciskami */
 }
+
+.menu-content button {
+  width: 30%; /* Przyciski zajmują 30% szerokości kontenera */
+  padding: 10px;
+  background-color: #eee;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.menu-content button:hover {
+  background-color: #ddd; /* Zmiana koloru przycisku na hover */
+}
+
+.menu-content #next-btn{
+  width: 90%;
+  padding: 10px;
+  background-color: #eee;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
 
 #plantSelect {
   width: 100%;
