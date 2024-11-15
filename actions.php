@@ -27,9 +27,20 @@
         $password = $_POST['password'];
         $rep_password = $_POST['rep_password'];
         $connection = mysqli_connect("localhost", "muchAdmin", "ImDefinetelyNot16YO.","userbase"); 
+        $isEmailCorrect = strpos( $email, "@" );
         $isEmailDefined = ($connection->query("SELECT Count(*) FROM users WHERE email='$email'")->num_rows)==0;
         $isLoginDefined = ($connection->query("SELECT Count(*) FROM users WHERE login='$login'")->num_rows)==0;
-        if($password == $rep_password && $isEmailDefined && $isLoginDefined){
+        
+        if($isEmailDefined){
+            header("Location: ./register.php?invalid=1");
+            exit();
+        } else if($isLoginDefined){
+            header("Location: ./register.php?invalid=2");
+            exit();
+        } else if($isEmailCorrect){
+            header("Location: ./register.php?invalid=3");
+            exit();
+        } else if($password == $rep_password  ){
             $date = date('Y/m/d');
             $sql = "INSERT INTO users(login,nazwa,haslo,email,dataStworzenia) VALUES ('$login','$displayName','$password','$email','$date')";
             $connection->query($sql);
