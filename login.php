@@ -125,12 +125,7 @@ session_start();
     input[type=submit]:hover {
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
-    }
-
-    .form {
-        display: flex;
-        align-items: center;
-        flex-direction: column;
+        background-color: var(--primary-dark);
     }
 
     .user-buttons {
@@ -139,7 +134,6 @@ session_start();
         left: 105em;
         transform:translateX(-50%) translateY(-50%);
     }
-
     .back {
         font-family: 'Segoe UI', system-ui, sans-serif;
         text-align: center;
@@ -147,14 +141,13 @@ session_start();
         background-color: var(--primary);
         color: #fff;
         border: none;
-        width: 10rem;
-        height: 4rem;
+        width: 6rem;
+        height: 3.5rem;
         border-radius: 0.5rem;
         padding:none;
         display: table;
 
     }
-
     .back span {
         
         display: table-cell;
@@ -164,9 +157,94 @@ session_start();
     .user-table {
         border-spacing: 1.5rem 0rem;
     }
-
-    a {
+    a{
         text-decoration: none;
+    }
+
+    .user-buttons {
+            position: static;
+            transform: none;
+            
+            justify-content: center;
+        }
+
+    /* Update existing login/register buttons for consistency */
+    .back {
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .back:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
+        background-color: var(--primary-dark);
+    }
+
+    /* Responsive styles */
+    @media (max-width: 1200px) {
+        .user-buttons {
+            right: 1rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .user-buttons {
+            position: static;
+            transform: none;
+            padding: 0.5rem;
+            justify-content: center;
+        }
+
+        .user-table {
+            border-spacing: 0.75rem 0;
+        }
+
+        .back {
+            width: 8rem;
+            height: 3.5rem;
+            font-size: 1.2rem;
+        }
+
+        .user-info {
+            font-size: 1.2rem;
+            margin-right: 1rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .user-buttons {
+            flex-direction: column;
+            gap: 0.75rem;
+            align-items: stretch;
+        }
+
+        .user-table {
+            width: 100%;
+        }
+
+        .back {
+            width: 100%;
+            height: 3rem;
+            font-size: 1.1rem;
+        }
+
+        .user-info {
+            text-align: center;
+            margin-right: 0;
+            margin-bottom: 0.5rem;
+        }
+    }
+
+    .back:active {
+        transform: translateY(1px);
+        box-shadow: 0 2px 6px rgba(46, 204, 113, 0.2);
+    }
+
+    .form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 </style>
 <body>
@@ -176,7 +254,11 @@ session_start();
             Garden Vision
         </div>
         <div class="user-buttons">
-            <a href="./index.php"><div class="back"><span>Back</span></div></a>  
+            <table class="user-table">
+                <tr>
+                    <td><a href="./index.php"><div class="back"><span>Back</span></div></a></td>
+                </tr>
+            </table>
         </div>
     </nav>
 

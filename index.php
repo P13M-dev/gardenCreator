@@ -104,6 +104,7 @@ session_start();
         .cta-button:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
+            background-color: var(--primary-dark);
         }
 
         .features {
@@ -319,7 +320,7 @@ session_start();
             color: #fff;
             border: none;
             width: 6rem;
-            height: 4rem;
+            height: 3.5rem;
             border-radius: 0.5rem;
             padding:none;
             display: table;
@@ -338,159 +339,122 @@ session_start();
             text-decoration: none;
         }
         .user-info {
-    display: inline-block;
-    margin-right: 1.5rem;
-    font-size: 1.5rem;
-    color: var(--text-dark);
-}
+            display: inline-block;
+            margin-right: 1.5rem;
+            font-size: 1.5rem;
+            color: var(--text-dark);
+        }
 
-.user-buttons {
-        position: static;
-        transform: none;
-        
-        justify-content: center;
-    }
+        .user-buttons {
+                position: static;
+                transform: none;
+                
+                justify-content: center;
+            }
 
-.logout-button form {
-    margin: 0;
-    padding: 0;
-}
+        .logout-button form {
+            margin: 0;
+            padding: 0;
+        }
 
-.logout-button input[type="submit"] {
-    font-family: 'Segoe UI', system-ui, sans-serif;
-    text-align: center;
-    font-size: 1.5rem;
-    background-color: var(--primary);
-    color: #fff;
-    border: none;
-    width: 6rem;
-    height: 4rem;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
+        .logout-button input[type="submit"] {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            text-align: center;
+            font-size: 1.5rem;
+            background-color: var(--primary);
+            color: #fff;
+            border: none;
+            width: 6rem;
+            height: 3.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
 
-.logout-button input[type="submit"]:hover {
-    background-color: var(--primary-dark);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
-}
+        .logout-button input[type="submit"]:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
+        }
 
-/* Add ripple effect on hover */
-.logout-button input[type="submit"]::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: width 0.3s ease-out, height 0.3s ease-out;
-}
+        /* Update existing login/register buttons for consistency */
+        .login-button, .register-button {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
 
-.logout-button input[type="submit"]:hover::after {
-    width: 200%;
-    height: 200%;
-}
+        .login-button:hover, .register-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
+            background-color: var(--primary-dark);
+        }
 
-/* Update existing login/register buttons for consistency */
-.login-button, .register-button {
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
+        /* Responsive styles */
+        @media (max-width: 1200px) {
+            .user-buttons {
+                right: 1rem;
+            }
+        }
 
-.login-button:hover, .register-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
-    background-color: var(--primary-dark);
-}
+        @media (max-width: 768px) {
+            .user-buttons {
+                position: static;
+                transform: none;
+                padding: 0.5rem;
+                justify-content: center;
+            }
 
-.login-button::after, .register-button::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: width 0.3s ease-out, height 0.3s ease-out;
-}
+            .user-table {
+                border-spacing: 0.75rem 0;
+            }
 
-.login-button:hover::after, .register-button:hover::after {
-    width: 200%;
-    height: 200%;
-}
+            .login-button, .register-button, .logout-button input[type="submit"] {
+                width: 8rem;
+                height: 3.5rem;
+                font-size: 1.2rem;
+            }
 
-/* Responsive styles */
-@media (max-width: 1200px) {
-    .user-buttons {
-        right: 1rem;
-    }
-}
+            .user-info {
+                font-size: 1.2rem;
+                margin-right: 1rem;
+            }
+        }
 
-@media (max-width: 768px) {
-    .user-buttons {
-        position: static;
-        transform: none;
-        padding: 0.5rem;
-        justify-content: center;
-    }
+        @media (max-width: 480px) {
+            .user-buttons {
+                flex-direction: column;
+                gap: 0.75rem;
+                align-items: stretch;
+            }
 
-    .user-table {
-        border-spacing: 0.75rem 0;
-    }
+            .user-table {
+                width: 100%;
+            }
 
-    .login-button, .register-button, .logout-button input[type="submit"] {
-        width: 8rem;
-        height: 3.5rem;
-        font-size: 1.2rem;
-    }
+            .login-button, .register-button, .logout-button input[type="submit"] {
+                width: 100%;
+                height: 3rem;
+                font-size: 1.1rem;
+            }
 
-    .user-info {
-        font-size: 1.2rem;
-        margin-right: 1rem;
-    }
-}
+            .user-info {
+                text-align: center;
+                margin-right: 0;
+                margin-bottom: 0.5rem;
+            }
 
-@media (max-width: 480px) {
-    .user-buttons {
-        flex-direction: column;
-        gap: 0.75rem;
-        align-items: stretch;
-    }
+            .logout-button {
+                width: 100%;
+            }
+        }
 
-    .user-table {
-        width: 100%;
-    }
-
-    .login-button, .register-button, .logout-button input[type="submit"] {
-        width: 100%;
-        height: 3rem;
-        font-size: 1.1rem;
-    }
-
-    .user-info {
-        text-align: center;
-        margin-right: 0;
-        margin-bottom: 0.5rem;
-    }
-
-    .logout-button {
-        width: 100%;
-    }
-    }
-
-    .login-button:active, .register-button:active, .logout-button input[type="submit"]:active {
-        transform: translateY(1px);
-        box-shadow: 0 2px 6px rgba(46, 204, 113, 0.2);
-    }
+        .login-button:active, .register-button:active, .logout-button input[type="submit"]:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 6px rgba(46, 204, 113, 0.2);
+        }
     </style>
     <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/512/6959/6959474.png" type="image/x-icon">
 </head>
