@@ -269,7 +269,7 @@ session_start();
     <main>
         <section class="hero">
             <div class="content">
-                <h1>Logowanie</h1>
+                <h1>Rejestracja</h1>
         
                 <div class="form">
                 <form action="actions.php" method="post">
